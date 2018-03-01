@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/empty_h"
+    android:weightSum="3"
+    android:orientation="horizontal"
+    android:layoutDirection="ltr"
+    >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:background="@drawable/blue_button_round"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="5dp"
+        ></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:weightSum="5"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="5"
+            android:padding="5dp"
+            >
+            <Button
+                android:id="@+id/scanBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="סרוק ברקוד"
+                android:textSize="10sp"
+                android:background="@drawable/blue_button_round"
+                android:layout_marginRight="5dp"/>
+
+            <android.support.v7.widget.SearchView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@drawable/blue_button_round">
+            </android.support.v7.widget.SearchView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:background="@drawable/blue_button_round"
+            android:layout_marginRight="5dp"
+            ></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:padding="5dp"
+            >
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="הזמן שליח"
+                android:textSize="10sp"
+                android:background="@drawable/blue_button_round"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="סלסלה"
+                android:textSize="10sp"
+                android:background="@drawable/blue_button_round"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="חזור"
+                android:textSize="10sp"
+                android:background="@drawable/blue_button_round"
+                android:layout_marginRight="5dp"
+                android:onClick="goBack"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

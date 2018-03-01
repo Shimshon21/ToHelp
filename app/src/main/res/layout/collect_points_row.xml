@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:background="@drawable/places"
+        android:layoutDirection="ltr"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/waze_nav_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/blue_button_oval"
+                android:src="@drawable/nav_w"
+                android:padding="6dp"
+                android:layout_marginBottom="20dp"
+                android:onClick="waze_btn_click"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+
+            >
+
+            <TextView
+                android:id="@+id/lable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:text="הכל בידי שמים"
+                android:textColor="#000000"
+
+
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

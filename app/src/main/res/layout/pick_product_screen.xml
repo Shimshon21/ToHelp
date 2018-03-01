@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/empty_v"
+    android:weightSum="10"
+    android:orientation="vertical"
+    android:layoutDirection="ltr"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:padding="5dp"
+        >
+        <Button
+            android:id="@+id/scanBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="סרוק ברקוד"
+            android:textSize="10sp"
+            android:background="@drawable/blue_button_round"
+            android:layout_marginRight="5dp"
+            android:onClick="goToScanBarCode"/>
+
+        <android.support.v7.widget.SearchView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@drawable/blue_button_round"></android.support.v7.widget.SearchView>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_weight="8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/categoty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                ></android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mainGrid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                ></android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/productItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_black"
+            android:layout_centerInParent="true"
+            ></FrameLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:padding="5dp"
+        >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="הזמן שליח"
+            android:textSize="10sp"
+            android:background="@drawable/blue_button_round"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="סלסלה"
+            android:textSize="10sp"
+            android:background="@drawable/blue_button_round"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="חזור"
+            android:textSize="10sp"
+            android:background="@drawable/blue_button_round"
+            android:layout_marginRight="5dp"
+            android:onClick="goBack"/>
+
+    </LinearLayout>
+
+</LinearLayout>

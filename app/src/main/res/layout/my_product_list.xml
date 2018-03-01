@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/empty_v">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#278edc"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="סלסלת המוצרים שלי"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/productListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="#FFCC00"
+        android:dividerHeight="0px"
+        android:layoutDirection="ltr"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/footer"
+        />
+
+    <FrameLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/shimshon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#278edc"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            >
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/barcodeBtn"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:text="הזמן שליח"
+                android:onClick="sendClick"
+                />
+
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:layout_marginVertical="5dp"/>
+
+            <Button
+                android:id="@+id/barcodeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="5dp"
+                android:text="סרוק ברקוד"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:onClick="barcodeClick"
+                />
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:layout_marginVertical="5dp"/>
+
+            <Button
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/barcodeBtn"
+                android:text="מסך ראשי"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:onClick="goBackClick"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
