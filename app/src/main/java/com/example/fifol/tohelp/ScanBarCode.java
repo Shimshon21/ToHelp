@@ -46,7 +46,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
         barcode = new BarcodeDetector.Builder(getActivity()).setBarcodeFormats(Barcode.EAN_13).build();
         if (!barcode.isOperational()) {
             Toast.makeText(getActivity(), "מצטערים אין תמיכה בסריקת הברקוד.", Toast.LENGTH_LONG).show();
-            finishFragment();
+            finishFragment(null);
         }
         cameraSource = new CameraSource.Builder(getActivity(), barcode).setFacing(CameraSource.CAMERA_FACING_BACK).setRequestedFps(24).setAutoFocusEnabled(true).setRequestedPreviewSize(1920, 1024).build();
         new AlertDialog.Builder(getActivity()).setTitle("סרוק את הברקוד על המוצר.").show();
@@ -92,14 +92,16 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barCodes = detections.getDetectedItems();
                 if (barCodes.size() > 0) {
-                    Log.d("Result Barcode: ",barCodes.valueAt(0).displayValue);
-                    finishFragment();
+                    Barcode barcode = barCodes.valueAt(0);
+                    Log.d("Result Barcode: ",barcode.displayValue);
+                    finishFragment(barcode);
                 }
             }
         });
     }
-    public void finishFragment() {
+    public void finishFragment(Barcode barcode) {
         if (getActivity() != null) {
+            ((MyProductList)getActivity()).getBarCode(barcode);
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(ScanBarCode.this);
