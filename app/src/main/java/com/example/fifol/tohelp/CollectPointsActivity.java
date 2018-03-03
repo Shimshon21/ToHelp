@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+
+import com.example.fifol.tohelp.Adapters.CollectPointsAdapter;
+
 import java.util.ArrayList;
 
 /**

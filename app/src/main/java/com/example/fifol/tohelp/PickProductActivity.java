@@ -2,7 +2,6 @@ package com.example.fifol.tohelp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,8 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +22,8 @@ import android.widget.Toast;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.example.fifol.tohelp.Adapters.CategoryGridAdapter;
+import com.example.fifol.tohelp.Adapters.ProductGridAdapter;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.apache.commons.io.IOUtils;

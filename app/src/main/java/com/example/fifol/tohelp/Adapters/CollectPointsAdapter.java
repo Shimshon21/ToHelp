@@ -1,4 +1,4 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-    public class CollectPointsAdapter extends ArrayAdapter<String> {
+import com.example.fifol.tohelp.R;
+
+public class CollectPointsAdapter extends ArrayAdapter<String> {
         private final Context context;
         private final String[] values;
 

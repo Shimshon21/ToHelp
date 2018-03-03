@@ -38,4 +38,8 @@ public class DonorActivity extends Activity {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 028546212"));
         startActivity(i);
     }
+
+    public void logOut(View view) {
+        finish();
+    }
 }

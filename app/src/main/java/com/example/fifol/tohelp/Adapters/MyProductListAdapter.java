@@ -1,4 +1,4 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fifol.tohelp.MyProductList;
+import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.GetDataBlumix;
 import com.example.fifol.tohelp.Utils.MyData;
 import com.example.fifol.tohelp.Utils.SingeltonUtil;
@@ -28,7 +30,7 @@ import java.util.List;
     SingeltonUtil singy = SingeltonUtil.getSingy();
 
         public MyProductListAdapter(Context context, List<MyData> values) {
-            super(context,R.layout.my_product_row);
+            super(context, R.layout.my_product_row);
             this.context = context;
             this.values = values;
             System.out.println(values);

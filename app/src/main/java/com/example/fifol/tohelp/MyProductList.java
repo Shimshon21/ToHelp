@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,10 +27,12 @@ import android.widget.Toast;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.example.fifol.tohelp.Adapters.MyBasketListAdapter;
+import com.example.fifol.tohelp.Adapters.MyProductListAdapter;
 import com.example.fifol.tohelp.Utils.MyData;
+import com.example.fifol.tohelp.Utils.MySqlLite;
 import com.example.fifol.tohelp.Utils.SingeltonUtil;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +58,7 @@ public class MyProductList extends AppCompatActivity{
     private List<MyData> dbListData;
     public ListView listview;
     ProgressBar progressBar;
+    MyBasketListAdapter adapter;
 
     final String TEXT_API_KEY = "aturedishavingrooletille";
     final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";
@@ -62,36 +67,37 @@ public class MyProductList extends AppCompatActivity{
 
     final CloudantClient client = ClientBuilder.account(DB_USER_NAME).username(TEXT_API_KEY).password(TEXT_API_SECRET).build();
     SingeltonUtil singy = SingeltonUtil.getSingy();
+    SQLiteDatabase myDb ;
 
     @Override
+    @SuppressLint("StaticFieldLeak")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_product_list);
+        myDb = new MySqlLite(this).getReadableDatabase();
         cameraView = findViewById(R.id.cameraView);
         listview=findViewById(R.id.productListView);
         progressBar=findViewById(R.id.productsLoading);
-        getCompanyaData("materna");
-       /* String[] values = new String[]{
-                "מרכז קהילתי נאות שושנים.\nסיגלון 12, חולון.\nטלפון: 03-5503977",
-                "מרכז קהילתי ומרכז הספורט בן גוריון.\nקרסל 6, חולון.\nטלפון: 03-5528490",
-                "מרכז קהילתי נווה ארזים.\nישעיהו 16, חולון.\nטלפון: 03-5506772",
-                "מרכז קהילתי וולפסון.\nצבי ש\"ץ 29, חולון.\nטלפון: 03-6519181",
-                "מרכז קהילתי לזרוס.\nסנהדרין 27, חולון.\nטלפון: 03-5030068",
-                "מרכז קהילתי נאות רחל.\nחצרים 2, חולון.\nטלפון: 03-5035499",
-                "מרכז קהילתי קליין.\nפילדפיה 16, חולון.\nטלפון: 03-5038083",
-                "מרכז קהילתי תורני.\nפילדפיה 5, חולון.\nטלפון: 03-5015529",
-                "מרכז פסגות.\nסרלין 21, חולון.\nטלפון: 03-6530300",
-                "מרכז חנקין.\nחנקין 109, חולון.\nטלפון: 03-5590021",
-                "רעים מרכז למחול ותנועת הגוף.\nהופיין 44, חולון.\nטלפון: 03-5035299",
-                "מרכז שטיינברג החדש -\nבמה למוסיקה חיה.\nגבעת התחמושת 21, חולון.\nטלפון: 03-5500012"};
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }*/
+        final List<Map> productSql = getSqlData();
+        //Todo - fix flyweight load images
+         adapter = new MyBasketListAdapter(MyProductList.this, productSql);
+        listview.setAdapter(adapter);
+        progressBar.setVisibility(View.INVISIBLE);
+          }
+        public void  setFlyweight(List<Map> list){
+            for (Map key:list){
+                if(flyweightImgs.get(key.get("ProductImage"))==null){
+                    String url = key.get("ProductImage").toString();
+                    try {
+                        flyweightImgs.put(url, BitmapFactory.decodeStream(new URL(url).openStream()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
+            }
 
-
-    }
+          }
 
     //Ask user for permission to use the camera .
     private void askPermission() {
@@ -119,11 +125,13 @@ public class MyProductList extends AppCompatActivity{
             case PREMISSION_REQUEST: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    Fragment fragment = new ScanBarCode();
-                    fragmentTransaction.add(fragment,null);
-                    fragmentTransaction.commit();
+                    if(!isFinishing()) {
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        Fragment fragment = new ScanBarCode();
+                        fragmentTransaction.add(fragment, null);
+                        fragmentTransaction.commit();
+                    }
                 } else {
                     Toast.makeText(this,"הסורק לא יעבור בלי הרשאה למצלמה", Toast.LENGTH_LONG).show();
                 }
@@ -159,7 +167,7 @@ public class MyProductList extends AppCompatActivity{
                     dbData=null;
                 }
                 if(dbData != null) {
-                    setFlyweightImgs(dbData);
+                    setFlyweightAttchImgs(dbData);
                     List<MyData> results = new ArrayList<>();
                     results.add(dbData);
                     return results;
@@ -168,13 +176,34 @@ public class MyProductList extends AppCompatActivity{
             @Override
             protected void onPostExecute(List<MyData> results) {
                 if(results!=null) {
-                    final MyProductListAdapter adapter = new MyProductListAdapter(MyProductList.this, results);
-                    listview.setAdapter(adapter);
+                    MyData item = results.get(0);
+                    String insert = "INSERT INTO products (ProductId,ProductImage,ProductDesc,ProductTitle) VALUES ((?),(?),(?),(?)) ";
+                    String url =singy.getImageAttachment(item);
+                    myDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
+                   List<Map> productSql = getSqlData();
+                    adapter = new MyBasketListAdapter(MyProductList.this, productSql);
+                    adapter.notifyDataSetChanged();
                 }else {
-                    new AlertDialog.Builder(MyProductList.this).setTitle("משהו השתבש!:         ").setMessage("מוצר זה אינו קיים במערכת.").show();
+                    new AlertDialog.Builder(MyProductList.this).setTitle("משהו השתבש!:            ").setMessage("מוצר זה אינו קיים במערכת.").show();
                 }
             }
         }.execute();
+    }
+
+    private List<Map> getSqlData() {
+        List<Map> sqlData=new ArrayList<>();
+
+        Cursor sqlProducts = myDb.rawQuery("Select * from products",null);
+        for (sqlProducts.moveToFirst();!sqlProducts.isAfterLast();sqlProducts.moveToNext()){
+            Map<String,String> map = new HashMap<>();
+             map.put(sqlProducts.getColumnName(4) ,sqlProducts.getString(4));
+            map.put(sqlProducts.getColumnName(1) ,sqlProducts.getString(1));
+            map.put(sqlProducts.getColumnName(2) ,sqlProducts.getString(2));
+            map.put(sqlProducts.getColumnName(3) ,sqlProducts.getString(3));
+            System.out.println(sqlProducts.getColumnName(3) +""+sqlProducts.getString(3) +" " +sqlProducts.getColumnName(2)+" " +sqlProducts.getString(2)+" "+sqlProducts.getColumnName(1) +""+sqlProducts.getString(1)+"");
+            sqlData.add(map);
+        }
+        return sqlData;
     }
 
     //Set search by company name from database.
@@ -203,7 +232,7 @@ public class MyProductList extends AppCompatActivity{
     }
 
     //If image is not exist save it in flyweightImgs list.
-    public void setFlyweightImgs(MyData item){
+    public void setFlyweightAttchImgs(MyData item){
         try {
             String url = singy.getImageAttachment(item);
             if (flyweightImgs.get(url)== null){
@@ -212,17 +241,6 @@ public class MyProductList extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getImageAttachment(MyData item) {
-        try {
-            JSONObject jsonStr = new JSONObject(new Gson().toJson(item._attachments));
-            String url="https://5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix.cloudant.com/products/"+item._id+"/"+ jsonStr.names().get(0);
-            return url;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     //Get all documents by company type.
@@ -238,7 +256,7 @@ public class MyProductList extends AppCompatActivity{
                 List<MyData> resultsItems = db.findByIndex(myJson, MyData.class);
                 dbListData = resultsItems;
                 for (MyData item : resultsItems) {
-                    setFlyweightImgs(item);
+                    setFlyweightAttchImgs(item);
                     System.out.println("decoding");
                 }
                 System.out.println("finished");

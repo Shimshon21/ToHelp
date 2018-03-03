@@ -271,7 +271,7 @@
             android:background="#BFBFBF"
             android:layout_marginBottom="15dp"
             android:layout_marginHorizontal="3dp"
-
+            android:onClick="logOut"
             >
 
             <TextView
