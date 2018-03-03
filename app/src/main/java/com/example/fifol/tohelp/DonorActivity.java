@@ -1,9 +1,13 @@
 package com.example.fifol.tohelp;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 /**
@@ -11,6 +15,7 @@ import android.view.View;
  */
 
 public class DonorActivity extends Activity {
+    int CALL_REQUEST=300;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,13 +24,18 @@ public class DonorActivity extends Activity {
 
     //start DonateProduct activity.
     public void goToDonateProduct(View view) {
-        Intent i = new Intent(this,MyProductList.class);
+        Intent i = new Intent(this, MyProductList.class);
         startActivity(i);
     }
 
     //start CollectionPoints activity.
     public void goToCollectPoints(View view) {
-        Intent i = new Intent(this,CollectPointsActivity.class);
+        Intent i = new Intent(this, CollectPointsActivity.class);
+        startActivity(i);
+    }
+
+    public void callForMoneyDonation(View view) {
+        Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 028546212"));
         startActivity(i);
     }
 }

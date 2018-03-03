@@ -48,8 +48,10 @@ import java.util.List;
                 convertView = inflater.inflate(R.layout.my_product_row, parent, false);
                 System.out.println("first only");
             }
+            TextView productDesc = convertView.findViewById(R.id.productDesc);
             TextView textView = convertView.findViewById(R.id.productInfo);
-            textView.setText(item.desc);
+            textView.setText(item.title);
+            productDesc.setText(item.desc);
             ImageView imageView = convertView.findViewById(R.id.productImg);
             String url = singy.getImageAttachment(item);
             imageView.setImageBitmap( MyProductList.flyweightImgs.get(url));

@@ -20,7 +20,7 @@ public class ProductItem extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_item, container, false);
+        return inflater.inflate(R.layout.bar_scanner_camera, container, false);
     }
 
     @Override

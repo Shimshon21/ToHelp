@@ -1,16 +1,12 @@
 package com.example.fifol.tohelp;
 
 import android.Manifest;
-import android.app.Fragment;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -19,6 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -34,15 +31,26 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
     BarcodeDetector barcode;
     CameraSource cameraSource;
     SurfaceHolder holder;
+    Button btnCloseFrag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_item, container, false);
+        return inflater.inflate(R.layout.bar_scanner_camera, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnCloseFrag = view.findViewById(R.id.closeBtn);
+        btnCloseFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(ScanBarCode.this);
+                fragmentTransaction.commit();
+            }
+        });
         barcode = new BarcodeDetector.Builder(getActivity()).setBarcodeFormats(Barcode.EAN_13).build();
         if (!barcode.isOperational()) {
             Toast.makeText(getActivity(), "מצטערים אין תמיכה בסריקת הברקוד.", Toast.LENGTH_LONG).show();

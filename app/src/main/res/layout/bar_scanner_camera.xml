@@ -8,11 +8,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <Button
+            android:id="@+id/closeBtn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/close"
+            android:layout_alignParentRight="true"
+           />
 
         <SurfaceView
             android:id="@+id/cameraView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
 
     </RelativeLayout>
 </FrameLayout>

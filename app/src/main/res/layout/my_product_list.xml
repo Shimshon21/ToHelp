@@ -23,6 +23,12 @@
             android:layout_centerInParent="true"
             />
     </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/productsLoading"
+        android:layout_margin="40dp"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ListView
         android:id="@+id/productListView"

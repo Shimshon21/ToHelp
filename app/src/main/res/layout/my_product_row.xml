@@ -24,18 +24,34 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:src="@drawable/materna"
-            android:padding="4dp"
+            android:padding="0dp"
             />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
 
         <TextView
             android:id="@+id/productInfo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="fjhkjhjkhkjhkjhkjhkj"
             android:textColor="#000000"
+            android:textDirection="rtl"
+            android:layout_alignParentRight="true" />
+        <TextView
+            android:layout_alignParentRight="true"
+            android:id="@+id/productDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fjhkjhjkhkjhkjhkjhkj"
+            android:layout_below="@+id/productInfo"
+            android:textColor="#000000"
             android:textDirection="rtl"/>
+        </RelativeLayout>
+
 
         </LinearLayout>
+
 
 </RelativeLayout>

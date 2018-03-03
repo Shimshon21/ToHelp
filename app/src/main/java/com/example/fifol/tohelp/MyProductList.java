@@ -13,11 +13,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cloudant.client.api.ClientBuilder;
@@ -50,10 +52,14 @@ public class MyProductList extends AppCompatActivity{
     public static Map<String, Bitmap> flyweightImgs = new HashMap();
     private MyData dbData;
     private List<MyData> dbListData;
+    public ListView listview;
+    ProgressBar progressBar;
+
     final String TEXT_API_KEY = "aturedishavingrooletille";
     final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";
     final String DB_USER_NAME = "5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix";
     final String DB_NAME_TEXT = "products";
+
     final CloudantClient client = ClientBuilder.account(DB_USER_NAME).username(TEXT_API_KEY).password(TEXT_API_SECRET).build();
     SingeltonUtil singy = SingeltonUtil.getSingy();
 
@@ -62,9 +68,9 @@ public class MyProductList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_product_list);
         cameraView = findViewById(R.id.cameraView);
-        getDataById("7290013083678");
-
-
+        listview=findViewById(R.id.productListView);
+        progressBar=findViewById(R.id.productsLoading);
+        getCompanyaData("materna");
        /* String[] values = new String[]{
                 "מרכז קהילתי נאות שושנים.\nסיגלון 12, חולון.\nטלפון: 03-5503977",
                 "מרכז קהילתי ומרכז הספורט בן גוריון.\nקרסל 6, חולון.\nטלפון: 03-5528490",
@@ -86,11 +92,6 @@ public class MyProductList extends AppCompatActivity{
 
 
     }
-
-
-
-
-
 
     //Ask user for permission to use the camera .
     private void askPermission() {
@@ -151,26 +152,32 @@ public class MyProductList extends AppCompatActivity{
             @Override
             protected List<MyData> doInBackground(Void... voids) {
                 Database db = client.database(DB_NAME_TEXT, false);
-                System.out.println(db.find(MyData.class,data)._id);
-                dbData = db.find(MyData.class,data);
-                setFlyweightImgs(dbData);
-                List<MyData> results = new ArrayList<>();
-                results.add(dbData);
-                return results;
+                try{
+                    dbData = db.find(MyData.class,data);
+                }catch (RuntimeException e){
+                    e.printStackTrace();
+                    dbData=null;
+                }
+                if(dbData != null) {
+                    setFlyweightImgs(dbData);
+                    List<MyData> results = new ArrayList<>();
+                    results.add(dbData);
+                    return results;
+                }return null;
             }
             @Override
             protected void onPostExecute(List<MyData> results) {
-                final ListView listview = findViewById(R.id.productListView);
-                final MyProductListAdapter adapter = new MyProductListAdapter(MyProductList.this,results);
-                listview.setAdapter(adapter);
-                System.out.println("Adapter set with reuslt " +results.get(0)._id);
+                if(results!=null) {
+                    final MyProductListAdapter adapter = new MyProductListAdapter(MyProductList.this, results);
+                    listview.setAdapter(adapter);
+                }else {
+                    new AlertDialog.Builder(MyProductList.this).setTitle("משהו השתבש!:         ").setMessage("מוצר זה אינו קיים במערכת.").show();
+                }
             }
         }.execute();
     }
 
-
-
-    //Set search by id from database.
+    //Set search by company name from database.
     private String  setQuery(String companyName) {
         String myJson="";
         try {
@@ -195,12 +202,12 @@ public class MyProductList extends AppCompatActivity{
         return myJson;
     }
 
+    //If image is not exist save it in flyweightImgs list.
     public void setFlyweightImgs(MyData item){
         try {
             String url = singy.getImageAttachment(item);
             if (flyweightImgs.get(url)== null){
                 flyweightImgs.put(url, BitmapFactory.decodeStream(new URL(url).openStream()));
-                System.out.println("Image decoded !!!!");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -222,20 +229,27 @@ public class MyProductList extends AppCompatActivity{
     @SuppressLint("StaticFieldLeak")
     public List<MyData> getCompanyaData(final String companyName){
         System.out.println("get company data");
-        new AsyncTask<Void, Void,Void>() {
+        new AsyncTask<Void, Void,List<MyData>>() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected List<MyData> doInBackground(Void... voids) {
                 //return databases.toString();
                 Database db = client.database(DB_NAME_TEXT, false);
                 String myJson=setQuery(companyName);
-                List<MyData> test = db.findByIndex(myJson, MyData.class);
-                dbListData = test;
-                for (MyData item : test) {
+                List<MyData> resultsItems = db.findByIndex(myJson, MyData.class);
+                dbListData = resultsItems;
+                for (MyData item : resultsItems) {
                     setFlyweightImgs(item);
                     System.out.println("decoding");
                 }
                 System.out.println("finished");
-                return null;
+                return resultsItems;
+            }
+
+            @Override
+            protected void onPostExecute(List<MyData> resultsItems) {
+                MyProductListAdapter adapter = new MyProductListAdapter(MyProductList.this,resultsItems);
+               listview.setAdapter(adapter);
+               progressBar.setVisibility(View.INVISIBLE);
             }
         }.execute();
         return dbListData;
