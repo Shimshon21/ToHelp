@@ -49,7 +49,6 @@ import java.util.Map;
  */
 
 public class MyProductList extends AppCompatActivity{
-
     public static final int PREMISSION_REQUEST = 200;
     SurfaceView cameraView;
     Barcode barcode;
@@ -80,12 +79,25 @@ public class MyProductList extends AppCompatActivity{
         progressBar=findViewById(R.id.productsLoading);
         final List<Map> productSql = getSqlData();
         //Todo - fix flyweight load images
-         adapter = new MyBasketListAdapter(MyProductList.this, productSql);
-        listview.setAdapter(adapter);
-        progressBar.setVisibility(View.INVISIBLE);
+        new AsyncTask<Void,Void,List<Map>>(){
+            @Override
+            protected List<Map> doInBackground(Void... avoid) {
+                setFlyweight(productSql);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(List<Map> aVoid) {
+                adapter = new MyBasketListAdapter(MyProductList.this, productSql);
+                listview.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        }.execute();
           }
         public void  setFlyweight(List<Map> list){
+            System.out.println(list);
             for (Map key:list){
+                System.out.println("decoid" + key);
                 if(flyweightImgs.get(key.get("ProductImage"))==null){
                     String url = key.get("ProductImage").toString();
                     try {
@@ -130,7 +142,11 @@ public class MyProductList extends AppCompatActivity{
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         Fragment fragment = new ScanBarCode();
                         fragmentTransaction.add(fragment, null);
-                        fragmentTransaction.commit();
+                        try {
+                            fragmentTransaction.commit();
+                        }catch (IllegalStateException e){
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     Toast.makeText(this,"הסורק לא יעבור בלי הרשאה למצלמה", Toast.LENGTH_LONG).show();
@@ -181,8 +197,7 @@ public class MyProductList extends AppCompatActivity{
                     String url =singy.getImageAttachment(item);
                     myDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
                    List<Map> productSql = getSqlData();
-                    adapter = new MyBasketListAdapter(MyProductList.this, productSql);
-                    adapter.notifyDataSetChanged();
+                    adapter.swap(productSql);
                 }else {
                     new AlertDialog.Builder(MyProductList.this).setTitle("משהו השתבש!:            ").setMessage("מוצר זה אינו קיים במערכת.").show();
                 }

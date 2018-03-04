@@ -16,6 +16,8 @@ import com.example.fifol.tohelp.Utils.MyData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
 import com.example.fifol.tohelp.Utils.SingeltonUtil;
 
+import org.json.JSONArray;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ import java.util.Map;
 
     public class MyBasketListAdapter extends ArrayAdapter<String> {
         private final Context context;
-        private final List<Map> values;
+        private List<Map> values;
     SingeltonUtil singy = SingeltonUtil.getSingy();
     SQLiteDatabase db ;
 
@@ -73,4 +75,12 @@ import java.util.Map;
             });
             return convertView;
         }
+    public void swap(List<Map> data){
+        if(data == null || data.size()==0)
+            return;
+        else{
+            this.values = data;
+        }
+        notifyDataSetChanged();
+    }
 }

@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MySqlLite extends SQLiteOpenHelper {
    private static final String dbName="MyDataBase";
-    String[] initialStat={"CREATE TABLE  IF NOT EXISTS  products(id INTEGER PRIMARY KEY,ProductId VARCHAR(20),ProductImage Blob,ProductDesc VARCHAR(20),ProductTitle VARCHAR(20)"};
+    String[] initialStat={"CREATE TABLE  IF NOT EXISTS  products(id INTEGER PRIMARY KEY,ProductId VARCHAR(20),ProductImage Blob,ProductDesc VARCHAR(20),ProductTitle VARCHAR(20))"};
     public MySqlLite(Context context) {
         super(context,dbName, null, 1);
     }

@@ -2,7 +2,9 @@ package com.example.fifol.tohelp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -74,6 +76,8 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
                 try {
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(cameraView.getHolder());
+                    }else {
+                        finishFragment(null);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
