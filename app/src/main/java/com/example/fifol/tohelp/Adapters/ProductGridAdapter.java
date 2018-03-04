@@ -76,7 +76,6 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
             this.layout = itemView.findViewById(R.id.imageLayout);
         }
     }
-
     public void swap(JSONArray data){
         if(data == null || data.length()==0)
             return;

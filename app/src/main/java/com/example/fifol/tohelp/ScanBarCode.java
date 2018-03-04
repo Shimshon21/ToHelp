@@ -112,12 +112,16 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
         });
     }
     public void finishFragment(Barcode barcode) {
+        //Todo- fix consoume battery power ,may caused by camera still opened.
         if (getActivity() != null) {
             ((MyProductList)getActivity()).getBarCode(barcode);
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(ScanBarCode.this);
             fragmentTransaction.commit();
+            cameraSource.release();
+
         }
     }
+
 }

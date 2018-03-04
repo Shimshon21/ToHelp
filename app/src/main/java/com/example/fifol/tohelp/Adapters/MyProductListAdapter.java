@@ -10,13 +10,8 @@ import android.widget.TextView;
 
 import com.example.fifol.tohelp.MyProductList;
 import com.example.fifol.tohelp.R;
-import com.example.fifol.tohelp.Utils.GetDataBlumix;
 import com.example.fifol.tohelp.Utils.MyData;
-import com.example.fifol.tohelp.Utils.SingeltonUtil;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.fifol.tohelp.Utils.SingletonUtil;
 
 import java.util.List;
 
@@ -27,7 +22,7 @@ import java.util.List;
     public class MyProductListAdapter extends ArrayAdapter<String> {
         private final Context context;
         private final List<MyData> values;
-    SingeltonUtil singy = SingeltonUtil.getSingy();
+    SingletonUtil singy = SingletonUtil.getSingy();
 
         public MyProductListAdapter(Context context, List<MyData> values) {
             super(context, R.layout.my_product_row);
@@ -51,7 +46,7 @@ import java.util.List;
                 System.out.println("first only");
             }
             TextView productDesc = convertView.findViewById(R.id.productDesc);
-            TextView textView = convertView.findViewById(R.id.productInfo);
+            TextView textView = convertView.findViewById(R.id.productTitle);
             textView.setText(item.title);
             productDesc.setText(item.desc);
             ImageView imageView = convertView.findViewById(R.id.productImg);

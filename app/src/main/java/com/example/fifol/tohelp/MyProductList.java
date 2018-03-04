@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,7 +30,7 @@ import com.example.fifol.tohelp.Adapters.MyBasketListAdapter;
 import com.example.fifol.tohelp.Adapters.MyProductListAdapter;
 import com.example.fifol.tohelp.Utils.MyData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
-import com.example.fifol.tohelp.Utils.SingeltonUtil;
+import com.example.fifol.tohelp.Utils.SingletonUtil;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONException;
@@ -65,27 +64,25 @@ public class MyProductList extends AppCompatActivity{
     final String DB_NAME_TEXT = "products";
 
     final CloudantClient client = ClientBuilder.account(DB_USER_NAME).username(TEXT_API_KEY).password(TEXT_API_SECRET).build();
-    SingeltonUtil singy = SingeltonUtil.getSingy();
-    SQLiteDatabase myDb ;
+    SingletonUtil singy = SingletonUtil.getSingy();
+    SQLiteDatabase productsSqliteDb;
 
     @Override
     @SuppressLint("StaticFieldLeak")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_product_list);
-        myDb = new MySqlLite(this).getReadableDatabase();
+        productsSqliteDb = new MySqlLite(this).getReadableDatabase();
         cameraView = findViewById(R.id.cameraView);
         listview=findViewById(R.id.productListView);
         progressBar=findViewById(R.id.productsLoading);
-        final List<Map> productSql = getSqlData();
-        //Todo - fix flyweight load images
+        final List<Map> productSql = singy.getAllData(productsSqliteDb);
         new AsyncTask<Void,Void,List<Map>>(){
             @Override
             protected List<Map> doInBackground(Void... avoid) {
                 setFlyweight(productSql);
                 return null;
             }
-
             @Override
             protected void onPostExecute(List<Map> aVoid) {
                 adapter = new MyBasketListAdapter(MyProductList.this, productSql);
@@ -143,6 +140,7 @@ public class MyProductList extends AppCompatActivity{
                         Fragment fragment = new ScanBarCode();
                         fragmentTransaction.add(fragment, null);
                         try {
+                            //Todo - fix commit problem first time ask premmision crushes of bundleInstane etc...
                             fragmentTransaction.commit();
                         }catch (IllegalStateException e){
                             e.printStackTrace();
@@ -191,12 +189,13 @@ public class MyProductList extends AppCompatActivity{
             }
             @Override
             protected void onPostExecute(List<MyData> results) {
+                //Todo - increase count coloumn by one if the product exist else added to data.
                 if(results!=null) {
                     MyData item = results.get(0);
-                    String insert = "INSERT INTO products (ProductId,ProductImage,ProductDesc,ProductTitle) VALUES ((?),(?),(?),(?)) ";
+                    String insert = "INSERT INTO products (ProductId,ProductImage,ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),'1')";
                     String url =singy.getImageAttachment(item);
-                    myDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
-                   List<Map> productSql = getSqlData();
+                    productsSqliteDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
+                   List<Map> productSql = singy.getAllData(productsSqliteDb);
                     adapter.swap(productSql);
                 }else {
                     new AlertDialog.Builder(MyProductList.this).setTitle("משהו השתבש!:            ").setMessage("מוצר זה אינו קיים במערכת.").show();
@@ -205,37 +204,16 @@ public class MyProductList extends AppCompatActivity{
         }.execute();
     }
 
-    private List<Map> getSqlData() {
-        List<Map> sqlData=new ArrayList<>();
-
-        Cursor sqlProducts = myDb.rawQuery("Select * from products",null);
-        for (sqlProducts.moveToFirst();!sqlProducts.isAfterLast();sqlProducts.moveToNext()){
-            Map<String,String> map = new HashMap<>();
-             map.put(sqlProducts.getColumnName(4) ,sqlProducts.getString(4));
-            map.put(sqlProducts.getColumnName(1) ,sqlProducts.getString(1));
-            map.put(sqlProducts.getColumnName(2) ,sqlProducts.getString(2));
-            map.put(sqlProducts.getColumnName(3) ,sqlProducts.getString(3));
-            System.out.println(sqlProducts.getColumnName(3) +""+sqlProducts.getString(3) +" " +sqlProducts.getColumnName(2)+" " +sqlProducts.getString(2)+" "+sqlProducts.getColumnName(1) +""+sqlProducts.getString(1)+"");
-            sqlData.add(map);
-        }
-        return sqlData;
-    }
-
     //Set search by company name from database.
     private String  setQuery(String companyName) {
         String myJson="";
         try {
-            // A Java type that can be serialized to JSON
             JSONObject myQuery = new JSONObject();
-            //get the query conditions
             JSONObject myQueryField = new JSONObject();
-            //Here put the search by condtioin.
             myQueryField.put("$eq", companyName);
             JSONObject myData = new JSONObject();
             myData.put("company", myQueryField);
             myQuery.put("selector", myData);
-            //get the fields
-            //Here put the field u want to be returend
             myQuery.put("fields", "[_id,company,title,desc,_attachments]");
             myQuery.put("sort", "[{_id,asc}]");
             Log.e("JSON", "myJson: " + myQuery.toString());
@@ -286,5 +264,8 @@ public class MyProductList extends AppCompatActivity{
             }
         }.execute();
         return dbListData;
+    }
+    public  void getAdapter(List<Map> data){
+       adapter.swap(data);
     }
 }
