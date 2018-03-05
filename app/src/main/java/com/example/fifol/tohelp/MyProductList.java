@@ -192,9 +192,10 @@ public class MyProductList extends AppCompatActivity{
                 //Todo - increase count coloumn by one if the product exist else added to data.
                 if(results!=null) {
                     MyData item = results.get(0);
+                    String insert2 = "INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),(1+(SELECT Count FROM products WHERE ProductId = (?))))";
                     String insert = "INSERT INTO products (ProductId,ProductImage,ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),'1')";
                     String url =singy.getImageAttachment(item);
-                    productsSqliteDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
+                    productsSqliteDb.execSQL(insert2,new String[]{item._id,url,item.desc,item.title,item._id});
                    List<Map> productSql = singy.getAllData(productsSqliteDb);
                     adapter.swap(productSql);
                 }else {

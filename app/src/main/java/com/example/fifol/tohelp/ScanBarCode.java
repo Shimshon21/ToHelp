@@ -3,6 +3,8 @@ package com.example.fifol.tohelp;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
@@ -31,7 +33,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
 
     SurfaceView cameraView;
     BarcodeDetector barcode;
-    CameraSource cameraSource;
+   static CameraSource cameraSource;
     SurfaceHolder holder;
     Button btnCloseFrag;
 
@@ -51,6 +53,8 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ScanBarCode.this);
                 fragmentTransaction.commit();
+                cameraSource.release();
+                cameraSource.stop();
             }
         });
         barcode = new BarcodeDetector.Builder(getActivity()).setBarcodeFormats(Barcode.EAN_13).build();
@@ -58,7 +62,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
             Toast.makeText(getActivity(), "מצטערים אין תמיכה בסריקת הברקוד.", Toast.LENGTH_LONG).show();
             finishFragment(null);
         }
-        cameraSource = new CameraSource.Builder(getActivity(), barcode).setFacing(CameraSource.CAMERA_FACING_BACK).setRequestedFps(24).setAutoFocusEnabled(true).setRequestedPreviewSize(1920, 1024).build();
+       cameraSource = new CameraSource.Builder(getActivity(), barcode).setFacing(CameraSource.CAMERA_FACING_BACK).setRequestedFps(24).setAutoFocusEnabled(true).setRequestedPreviewSize(1920, 1024).build();
         new AlertDialog.Builder(getActivity()).setTitle("סרוק את הברקוד על המוצר.").show();
         setCameraSetting();
         identfiyBarCode();
@@ -79,7 +83,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
                     }else {
                         finishFragment(null);
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -94,10 +98,11 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
 
     //When found barCode pass data to pickProductActivity and finish .
     private void identfiyBarCode() {
+        Boolean identify = false;
         barcode.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-
+                System.out.println("released!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
 
             @Override
@@ -112,16 +117,24 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
         });
     }
     public void finishFragment(Barcode barcode) {
-        //Todo- fix consoume battery power ,may caused by camera still opened.
         if (getActivity() != null) {
-            ((MyProductList)getActivity()).getBarCode(barcode);
+            ((MyProductList) getActivity()).getBarCode(barcode);
+            //Prevent from camrasource to keep working in background.
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(ScanBarCode.cameraSource != null) {
+                        cameraSource.stop();
+                    }
+                }
+            });
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(ScanBarCode.this);
             fragmentTransaction.commit();
-            cameraSource.release();
-
+        }
         }
     }
 
-}
+
