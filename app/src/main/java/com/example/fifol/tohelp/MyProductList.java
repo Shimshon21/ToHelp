@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -192,10 +193,18 @@ public class MyProductList extends AppCompatActivity{
                 //Todo - increase count coloumn by one if the product exist else added to data.
                 if(results!=null) {
                     MyData item = results.get(0);
-                    String insert2 = "INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),(1+(SELECT Count FROM products WHERE ProductId = (?))))";
-                    String insert = "INSERT INTO products (ProductId,ProductImage,ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),'1')";
-                    String url =singy.getImageAttachment(item);
-                    productsSqliteDb.execSQL(insert2,new String[]{item._id,url,item.desc,item.title,item._id});
+                    Cursor cursor = productsSqliteDb.rawQuery("SELECT Count FROM products WHERE ProductId = (?)",new String[]{item._id});
+                    if (cursor.moveToFirst()){
+                        System.out.println("Added by one");
+                        String insert2 = "INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),((SELECT Count FROM products WHERE ProductId = (?))+'1'))";
+                        String url =singy.getImageAttachment(item);
+                        productsSqliteDb.execSQL(insert2,new String[]{item._id,url,item.desc,item.title,item._id});
+                    }else {
+                        String insert = "INSERT INTO products (ProductId,ProductImage,ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),'1')";
+                        String url =singy.getImageAttachment(item);
+                        productsSqliteDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
+                    }
+                    //INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ('123','someimagae','awsome','title',(count = '1' Where (SELECT Count FROM products WHERE ProductId = '123')IS NULL +1))
                    List<Map> productSql = singy.getAllData(productsSqliteDb);
                     adapter.swap(productSql);
                 }else {

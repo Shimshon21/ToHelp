@@ -117,6 +117,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
         });
     }
     public void finishFragment(Barcode barcode) {
+        //todo fix  bug barcode scanned twice.
         if (getActivity() != null) {
             ((MyProductList) getActivity()).getBarCode(barcode);
             //Prevent from camrasource to keep working in background.
