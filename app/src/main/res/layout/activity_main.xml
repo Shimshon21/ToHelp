@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fifol.tohelp.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/ttl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="to help"
+                android:layout_centerInParent="true"
+                />
+
+        <Button
+            android:id="@+id/hamburger"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:background="@mipmap/menu_ham"
+            android:layout_alignParentRight="true"
+            android:onClick="openDrawer"
+            />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/navList"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="#ffeeeeee"/>
+        <FrameLayout
+            android:id="@+id/FragHolder"
+            android:layout_weight="5.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+        </FrameLayout>
+    </android.support.v4.widget.DrawerLayout>
+
+    <RelativeLayout
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="&#x2630;"
+            android:textSize="20sp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
