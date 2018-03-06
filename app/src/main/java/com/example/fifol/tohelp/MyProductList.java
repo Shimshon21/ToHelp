@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,9 +29,11 @@ import android.widget.Toast;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.cloudant.sync.internal.mazha.DocumentConflictException;
 import com.example.fifol.tohelp.Adapters.MyBasketListAdapter;
 import com.example.fifol.tohelp.Adapters.MyProductListAdapter;
-import com.example.fifol.tohelp.Utils.MyData;
+import com.example.fifol.tohelp.Utils.MyOrdersData;
+import com.example.fifol.tohelp.Utils.MyProdutsData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
 import com.example.fifol.tohelp.Utils.SingletonUtil;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -53,8 +57,8 @@ public class MyProductList extends AppCompatActivity{
     SurfaceView cameraView;
     Barcode barcode;
     public static Map<String, Bitmap> flyweightImgs = new HashMap();
-    private MyData dbData;
-    private List<MyData> dbListData;
+    private MyProdutsData dbData;
+    private List<MyProdutsData> dbListData;
     public ListView listview;
     ProgressBar progressBar;
     MyBasketListAdapter adapter;
@@ -63,6 +67,7 @@ public class MyProductList extends AppCompatActivity{
     final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";
     final String DB_USER_NAME = "5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix";
     final String DB_NAME_TEXT = "products";
+    final String DB_NAME_ORDERS="donaters_delivery_orders";
 
     final CloudantClient client = ClientBuilder.account(DB_USER_NAME).username(TEXT_API_KEY).password(TEXT_API_SECRET).build();
     SingletonUtil singy = SingletonUtil.getSingy();
@@ -155,44 +160,91 @@ public class MyProductList extends AppCompatActivity{
     }
 
     public void goBackClick(View view) {
-        Intent i = new Intent(this,DonorActivity.class);
-        startActivity(i);
+        finish();
     }
 
     public void barcodeClick(View view) {
         askPermission();
     }
 
-    public void sendClick(View view) {
-        Intent i = new Intent(this,DonorActivity.class);
-        startActivity(i);
+    public void sendProductOrder(View view) {
+       elfiTransaction();
+    }
+    private void elfiTransaction() {
+        //todo - Fragment for products ElFi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Map <String,Object> outMap = new HashMap<>();
+       List<Map> elfiMap = singy.getAllData(productsSqliteDb);
+       for (Map<String,Object> nrmMap:elfiMap){
+
+       }
+        writeDB();
+    }
+
+    //*****Write into DB*****//
+    @SuppressLint("StaticFieldLeak")
+    private void writeDB(){
+        if(productsSqliteDb.rawQuery("Select * from products",null).moveToFirst()) {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    //return databases.toString();
+                    Database db = client.database(DB_NAME_ORDERS, false);
+                    Map<String, Integer> products = new HashMap<>();
+                    List<Map> ownedProducts = singy.getAllData(productsSqliteDb);
+                    for (Map<String, Object> myMap : ownedProducts) {
+                        System.out.println(myMap);
+                        products.put(myMap.get("ProductTitle") + "_" + myMap.get("ProductDesc"), Integer.parseInt(myMap.get("Count").toString()));
+                    }
+                    // A Java type that can be serialized to JSON
+                    //write document in to db
+                    MyOrdersData myOrdersData = new MyOrdersData( "Shim@gmail.com","shimshon", "margalit303", products,"telephone");
+                    //MyProdutsData myProdutsData = new MyProdutsData(  );
+                    //todo fix existed document bug.
+                    try {
+                        db.save(myOrdersData);
+                    }catch (com.cloudant.client.org.lightcouch.DocumentConflictException e){
+                        e.printStackTrace();
+                        Toast.makeText(MyProductList.this,"מצטערים מוצר זה נקלט במערכת",Toast.LENGTH_LONG).show();
+                    }
+                    Log.e("TAG", "doInBackground: cloudant data was saved.... ");
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    System.out.println("****************pushed data successfully***************************");
+                    new AlertDialog.Builder(MyProductList.this).setTitle("תרומה התבצאה:").setMessage("תרומתך נקלטה במערכת אנחנו נשלח הודעה ששליח יגיע אליך.").show();
+                }
+            }.execute();
+            finish();
+        }else Toast.makeText(this,"אנא הוסף מוצר לרשימה.",Toast.LENGTH_SHORT).show();
     }
 
     //Get one document from data by id.
     @SuppressLint("StaticFieldLeak")
     public void getDataById(final String data){
-        new AsyncTask<Void,Void,List<MyData>>(){
+        new AsyncTask<Void,Void,List<MyProdutsData>>(){
             @Override
-            protected List<MyData> doInBackground(Void... voids) {
+            protected List<MyProdutsData> doInBackground(Void... voids) {
                 Database db = client.database(DB_NAME_TEXT, false);
                 try{
-                    dbData = db.find(MyData.class,data);
+                    dbData = db.find(MyProdutsData.class,data);
                 }catch (RuntimeException e){
                     e.printStackTrace();
                     dbData=null;
                 }
                 if(dbData != null) {
                     setFlyweightAttchImgs(dbData);
-                    List<MyData> results = new ArrayList<>();
+                    List<MyProdutsData> results = new ArrayList<>();
                     results.add(dbData);
                     return results;
                 }return null;
             }
             @Override
-            protected void onPostExecute(List<MyData> results) {
+            protected void onPostExecute(List<MyProdutsData> results) {
                 //Todo - increase count coloumn by one if the product exist else added to data.
                 if(results!=null) {
-                    MyData item = results.get(0);
+                    MyProdutsData item = results.get(0);
                     Cursor cursor = productsSqliteDb.rawQuery("SELECT Count FROM products WHERE ProductId = (?)",new String[]{item._id});
                     if (cursor.moveToFirst()){
                         System.out.println("Added by one");
@@ -235,7 +287,7 @@ public class MyProductList extends AppCompatActivity{
     }
 
     //If image is not exist save it in flyweightImgs list.
-    public void setFlyweightAttchImgs(MyData item){
+    public void setFlyweightAttchImgs(MyProdutsData item){
         try {
             String url = singy.getImageAttachment(item);
             if (flyweightImgs.get(url)== null){
@@ -248,17 +300,17 @@ public class MyProductList extends AppCompatActivity{
 
     //Get all documents by company type.
     @SuppressLint("StaticFieldLeak")
-    public List<MyData> getCompanyaData(final String companyName){
+    public List<MyProdutsData> getCompanyaData(final String companyName){
         System.out.println("get company data");
-        new AsyncTask<Void, Void,List<MyData>>() {
+        new AsyncTask<Void, Void,List<MyProdutsData>>() {
             @Override
-            protected List<MyData> doInBackground(Void... voids) {
+            protected List<MyProdutsData> doInBackground(Void... voids) {
                 //return databases.toString();
                 Database db = client.database(DB_NAME_TEXT, false);
                 String myJson=setQuery(companyName);
-                List<MyData> resultsItems = db.findByIndex(myJson, MyData.class);
+                List<MyProdutsData> resultsItems = db.findByIndex(myJson, MyProdutsData.class);
                 dbListData = resultsItems;
-                for (MyData item : resultsItems) {
+                for (MyProdutsData item : resultsItems) {
                     setFlyweightAttchImgs(item);
                     System.out.println("decoding");
                 }
@@ -267,7 +319,7 @@ public class MyProductList extends AppCompatActivity{
             }
 
             @Override
-            protected void onPostExecute(List<MyData> resultsItems) {
+            protected void onPostExecute(List<MyProdutsData> resultsItems) {
                 MyProductListAdapter adapter = new MyProductListAdapter(MyProductList.this,resultsItems);
                listview.setAdapter(adapter);
                progressBar.setVisibility(View.INVISIBLE);

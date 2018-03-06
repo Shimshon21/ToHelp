@@ -71,7 +71,7 @@
                 android:background="@android:color/transparent"
                 android:textStyle="bold"
                 android:text="הזמן שליח"
-                android:onClick="sendClick"
+                android:onClick="sendProductOrder"
                 />
 
             <LinearLayout

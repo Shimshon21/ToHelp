@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +32,8 @@ import java.util.Map;
     //Not used yet.
 public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
     private static Map<String, Bitmap> flyweightImgs = new HashMap();
-    private MyData dbData;
-    private List<MyData> dbListData;
+    private MyProdutsData dbData;
+    private List<MyProdutsData> dbListData;
     final String TEXT_API_KEY = "aturedishavingrooletille";
     final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";
     final String DB_USER_NAME = "5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix";
@@ -46,7 +45,7 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
 
     //
     public void setImage(String id, ImageView imageView){
-       MyData item = getDataById(id);
+       MyProdutsData item = getDataById(id);
         String url =getImageAttachment(item);
         Bitmap imageBit = flyweightImgs.get(url);
         if(imageBit!= null) {
@@ -55,7 +54,7 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
         Log.w("Image load error", "setImage:product doeas not exist in the data", null);
     }
 
-    private String getImageAttachment(MyData item) {
+    private String getImageAttachment(MyProdutsData item) {
         try {
            JSONObject jsonStr = new JSONObject(new Gson().toJson(item._attachments));
           String url="https://5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix.cloudant.com/products/"+item._id+"/"+ jsonStr.names().get(0);
@@ -72,13 +71,13 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
 
     //Get one document from data by id.
     @SuppressLint("StaticFieldLeak")
-    public MyData getDataById(final String data){
+    public MyProdutsData getDataById(final String data){
         new AsyncTask<Void,Void,Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 Database db = client.database(DB_NAME_TEXT, false);
-                System.out.println(db.find(MyData.class,data)._id);
-                 dbData = db.find(MyData.class,data);
+                System.out.println(db.find(MyProdutsData.class,data)._id);
+                 dbData = db.find(MyProdutsData.class,data);
                 setFlyweightImgs(dbData);
                 return null;
             }
@@ -115,7 +114,7 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
 
     //*****End reading values from DB*****//
     //Save images if not exist in flyweightImgs to improve load time.
-    public void setFlyweightImgs(MyData item){
+    public void setFlyweightImgs(MyProdutsData item){
             try {
             String url = getImageAttachment(item);
             if (flyweightImgs.get(url)== null){
@@ -132,7 +131,7 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
 
     //Get all documents by company type.
     @SuppressLint("StaticFieldLeak")
-    public List<MyData> getCompanyaData(final String companyName){
+    public List<MyProdutsData> getCompanyaData(final String companyName){
         System.out.println("get company data");
         return dbListData;
     }
@@ -143,9 +142,9 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
         String companyName="materna";
         Database db = client.database(DB_NAME_TEXT, false);
         String myJson=setQuery(companyName);
-        List<MyData> test = db.findByIndex(myJson, MyData.class);
+        List<MyProdutsData> test = db.findByIndex(myJson, MyProdutsData.class);
         dbListData = test;
-        for (MyData item : test) {
+        for (MyProdutsData item : test) {
             setFlyweightImgs(item);
             System.out.println("decoding");
         }

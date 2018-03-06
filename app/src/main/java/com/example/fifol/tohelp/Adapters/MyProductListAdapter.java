@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.fifol.tohelp.MyProductList;
 import com.example.fifol.tohelp.R;
-import com.example.fifol.tohelp.Utils.MyData;
+import com.example.fifol.tohelp.Utils.MyProdutsData;
 import com.example.fifol.tohelp.Utils.SingletonUtil;
 
 import java.util.List;
@@ -21,10 +21,10 @@ import java.util.List;
 
     public class MyProductListAdapter extends ArrayAdapter<String> {
         private final Context context;
-        private final List<MyData> values;
+        private final List<MyProdutsData> values;
     SingletonUtil singy = SingletonUtil.getSingy();
 
-        public MyProductListAdapter(Context context, List<MyData> values) {
+        public MyProductListAdapter(Context context, List<MyProdutsData> values) {
             super(context, R.layout.my_product_row);
             this.context = context;
             this.values = values;
@@ -39,7 +39,7 @@ import java.util.List;
 
     @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            MyData item = values.get(position);
+            MyProdutsData item = values.get(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.my_product_row, parent, false);

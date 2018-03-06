@@ -28,7 +28,7 @@ public class SingletonUtil {
        return singy;
     }
 
-    public String getImageAttachment(MyData item) {
+    public String getImageAttachment(MyProdutsData item) {
         try {
             JSONObject jsonStr = new JSONObject(new Gson().toJson(item._attachments));
             String url="https://5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix.cloudant.com/products/"+item._id+"/"+ jsonStr.names().get(0);
