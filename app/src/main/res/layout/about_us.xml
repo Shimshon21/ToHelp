@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fifol.tohelp.AboutUs"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#3a85d1"
+        android:weightSum="5">
+
+        <TextView
+            android:id="@+id/scrollTxt"
+            android:layout_margin="6dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:background="@drawable/blue_button"
+            android:maxLines="100"
+            android:gravity="center"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_button"
+            android:layout_centerInParent="true"
+            android:text="חזור"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:onClick="goBack"
+            />
+
+    </LinearLayout>
+</LinearLayout>
