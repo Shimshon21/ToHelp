@@ -17,7 +17,7 @@ import android.view.View;
 public class DonorActivity extends Activity {
     int CALL_REQUEST=300;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.donor_screen);
     }
@@ -25,6 +25,11 @@ public class DonorActivity extends Activity {
     //start DonateProduct activity.
     public void goToDonateProduct(View view) {
         Intent i = new Intent(this, MyProductList.class);
+        startActivity(i);
+    }
+    //start about us activity
+    public void goToAboutUs(View view) {
+        Intent i = new Intent(this, AboutUs.class);
         startActivity(i);
     }
 
@@ -38,7 +43,6 @@ public class DonorActivity extends Activity {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 028546212"));
         startActivity(i);
     }
-
     public void logOut(View view) {
         finish();
     }

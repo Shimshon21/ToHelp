@@ -158,6 +158,8 @@
                 android:weightSum="2"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:onClick="goToAboutUs"
+
                 >
 
                 <ImageView
@@ -166,6 +168,7 @@
                     android:layout_weight="1"
                     android:src="@drawable/gallery_icon"
                     android:paddingTop="20dp"
+
                     />
 
                 <android.support.v4.widget.Space

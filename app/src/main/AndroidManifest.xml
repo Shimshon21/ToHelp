@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +25,7 @@
         <activity android:name=".PickProductActivity" />
         <activity android:name=".MyProductList" />
         <activity android:name=".CollectPointsActivity" />
-        <activity android:name=".ScanBarCode"></activity>
+        <activity android:name=".AboutUs"/>
     </application>
 
 </manifest>
