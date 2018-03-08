@@ -23,7 +23,10 @@
         <activity android:name=".PickProductActivity" />
         <activity android:name=".MyProductList" />
         <activity android:name=".CollectPointsActivity" />
-        <activity android:name=".ScanBarCode"></activity>
+        <activity android:name=".DeliveriesActivities.DeliveryScreen"/>
+        <activity android:name=".DeliveriesActivities.CurrentMissionScreen"/>
+        <activity android:name=".DeliveriesActivities.MissionsScreen"/>
+        <activity android:name=".DeliveriesActivities.Test"/>
     </application>
 
 </manifest>

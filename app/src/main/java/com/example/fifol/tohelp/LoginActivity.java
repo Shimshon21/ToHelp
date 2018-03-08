@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.example.fifol.tohelp.DeliveriesActivities.DeliveryScreen;
+import com.example.fifol.tohelp.DeliveriesActivities.MissionsScreen;
+
 import java.io.IOException;
 
 
@@ -23,7 +26,7 @@ public class LoginActivity extends Activity {
     }
 
     public void logIn(View view) {
-        Intent i = new Intent(this,DonorActivity.class);
+        Intent i = new Intent(this,DeliveryScreen.class);
         startActivity(i);
     }
 

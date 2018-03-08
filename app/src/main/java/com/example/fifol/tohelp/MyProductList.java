@@ -32,6 +32,7 @@ import com.cloudant.client.api.Database;
 import com.cloudant.sync.internal.mazha.DocumentConflictException;
 import com.example.fifol.tohelp.Adapters.MyBasketListAdapter;
 import com.example.fifol.tohelp.Adapters.MyProductListAdapter;
+import com.example.fifol.tohelp.DeliveriesActivities.DelivaryDetailsFrag;
 import com.example.fifol.tohelp.Utils.MyOrdersData;
 import com.example.fifol.tohelp.Utils.MyProdutsData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
@@ -109,9 +110,7 @@ public class MyProductList extends AppCompatActivity{
                         e.printStackTrace();
                     }
                 }
-
             }
-
           }
 
     //Ask user for permission to use the camera .
@@ -140,17 +139,11 @@ public class MyProductList extends AppCompatActivity{
             case PREMISSION_REQUEST: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(!isFinishing()) {
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        Fragment fragment = new ScanBarCode();
-                        fragmentTransaction.add(fragment, null);
-                        try {
-                            //Todo - fix commit problem first time ask premmision crushes of bundleInstane etc...
-                            fragmentTransaction.commit();
-                        }catch (IllegalStateException e){
-                            e.printStackTrace();
-                        }
+                    //bug in xiaomi redmi note 4 worth checking.
+                    try {
+                        askPermission();
+                    }catch (RuntimeException e){
+                        e.printStackTrace();
                     }
                 } else {
                     Toast.makeText(this,"הסורק לא יעבור בלי הרשאה למצלמה", Toast.LENGTH_LONG).show();
@@ -177,7 +170,10 @@ public class MyProductList extends AppCompatActivity{
        for (Map<String,Object> nrmMap:elfiMap){
 
        }
-        writeDB();
+       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.barCodeScannerLay,new DelivaryDetailsFrag());
+        transaction.commit();
+        //writeDB();
     }
 
     //*****Write into DB*****//
