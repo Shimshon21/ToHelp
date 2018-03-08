@@ -2,6 +2,7 @@ package com.example.fifol.tohelp.Adapters;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,10 @@ import java.util.Map;
     }
 
 
+    @NonNull
     @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final Map<String,Object> item = values.get(position);
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            final Map item = values.get(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.my_product_row, parent, false);

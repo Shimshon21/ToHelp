@@ -7,11 +7,11 @@ import java.util.Map;
  */
 
 public class MyOrdersData {
-    String _id;
-    String doanatorName;
-    String address;
-    String phone;
-    Map<String,Integer> products;
+  public   String _id;
+   public String doanatorName;
+   public String address;
+   public String phone;
+   public Map<String,Integer> products;
 
 
     public MyOrdersData(){}
