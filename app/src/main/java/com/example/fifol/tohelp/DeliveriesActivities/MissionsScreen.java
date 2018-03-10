@@ -1,8 +1,6 @@
 package com.example.fifol.tohelp.DeliveriesActivities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +11,9 @@ import android.widget.ListView;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.example.fifol.tohelp.Adapters.DeliveryAdapter;
 import com.example.fifol.tohelp.R;
+import com.example.fifol.tohelp.Utils.CourierData;
 import com.example.fifol.tohelp.Utils.MyOrdersData;
 
 import java.io.IOException;
@@ -91,18 +91,19 @@ public class MissionsScreen extends AppCompatActivity {
     }
 
     public void wazeClick(View view) {
+        CourierData courierData = new CourierData();
     /*    String address = view.getTag().toString();
         String uri = "https://waze.com/ul?q=" + address;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(intent);*/
+
     }
 
     public void moreDetailClick(View view) {
-        //todo fix frame layout above the listview.
+        //Todo fix frame layout above the listview.
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.deliveryDetails,new DelivaryDetailsFrag());
+        transaction.replace(R.id.deliveryDetails,new MissionDetails());
         transaction.commit();
-
     }
 
     public void goBack(View view) {

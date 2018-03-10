@@ -7,14 +7,21 @@
     android:padding="10dp"
     android:background="#e1e1e1"
     android:layoutDirection="ltr">
+    <Button
+        android:id="@+id/closeFrag"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="x"
+      />
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -24,6 +31,63 @@
                 android:text="פרטים אישיים"/>
 
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="שם"
+                    android:text="ישראל ישראלי"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="כתובת"
+                    android:text="שוהם 5, רמת גן"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="אימל"
+                    android:text="שוהם 5, רמת גן"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="פלאפון"
+                    android:text="050-1234567"
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="end"/>
+            </android.support.design.widget.TextInputLayout>
+
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -31,24 +95,19 @@
                 android:textAlignment="center"
                 android:text="רשימת מוצרים"/>
 
-            <GridLayout
+            <ListView
                 android:id="@+id/products"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:orientation="vertical"
-                android:layout_gravity="right"
-                android:paddingTop="20dp"
+                android:layout_height="match_parent"
                 >
-            </GridLayout>
+
+            </ListView>
 
             <Button android:id="@+id/confirmBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="הזמנת שליח"
                 android:background="@color/colorPrimary"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="bottom"
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>

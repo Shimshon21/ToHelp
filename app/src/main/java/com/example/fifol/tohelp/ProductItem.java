@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 public class ProductItem extends Fragment {
 
-    TextView type,name,kosher,img;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +24,7 @@ public class ProductItem extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //type = view.findViewById(R.id.type);
-        //name = view.findViewById(R.id.name);
-        //kosher = view.findViewById(R.id.kosher);
-        //img = view.findViewById(R.id.img);
+
     }
 
 

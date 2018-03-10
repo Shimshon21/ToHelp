@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.cloudant.sync.documentstore.Database;
 
@@ -18,12 +19,14 @@ import java.util.Map;
 
 public class MySqlLite extends SQLiteOpenHelper {
    private static final String dbName="MyDataBase";
-    String[] initialStat={"CREATE TABLE  IF NOT EXISTS  products(id INTEGER PRIMARY KEY,ProductId VARCHAR(20),ProductImage Blob,ProductDesc VARCHAR(20),ProductTitle VARCHAR(20),Count INTEGER(3), UNIQUE(ProductId))"};
+   UserData userData =new UserData();
+    String[] initialStat={"CREATE TABLE  IF NOT EXISTS  "+userData.name+"(id INTEGER PRIMARY KEY,ProductId VARCHAR(20),ProductImage Blob,ProductDesc VARCHAR(20),ProductTitle VARCHAR(20),Count INTEGER(3), UNIQUE(ProductId))"};
     public MySqlLite(Context context) {
         super(context,dbName, null, 1);
     }
     private void initDb(SQLiteDatabase db){
         for(String table:initialStat){
+            Log.i("Data base Created","the data base was created successfully");
             db.execSQL(table);
         }
     }//sql create the data base

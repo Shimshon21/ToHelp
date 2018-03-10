@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.example.fifol.tohelp.DeliveriesActivities.DeliveryScreen;
-import com.example.fifol.tohelp.DeliveriesActivities.MissionsScreen;
+import com.example.fifol.tohelp.DonatorActivity.DonorActivity;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.DonatorActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -24,6 +24,7 @@ import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.example.fifol.tohelp.Adapters.CategoryGridAdapter;
 import com.example.fifol.tohelp.Adapters.ProductGridAdapter;
+import com.example.fifol.tohelp.R;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.apache.commons.io.IOUtils;
@@ -39,7 +40,7 @@ import java.nio.charset.Charset;
  * Created by fifol on 22/02/2018.
  */
 
-public class PickProductActivity extends AppCompatActivity {
+public class PickProductActivity extends AppCompatActivity {// NOT USED!!!!!!!!!!!!!!
     public static final int PREMISSION_REQUEST = 200;
     final String TEXT_API_KEY = "aturedishavingrooletille";
     final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";

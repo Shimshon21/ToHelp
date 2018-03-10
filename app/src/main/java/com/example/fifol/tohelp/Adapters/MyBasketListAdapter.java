@@ -11,10 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fifol.tohelp.MyProductList;
+import com.example.fifol.tohelp.DonatorActivity.MyProductList;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.MySqlLite;
 import com.example.fifol.tohelp.Utils.SingletonUtil;
+import com.example.fifol.tohelp.Utils.UserData;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.Map;
         private final Context context;
         private List<Map> values;
         SingletonUtil singy = SingletonUtil.getSingy();
+        UserData userData =new UserData();
         SQLiteDatabase db ;
 
         public MyBasketListAdapter(Context context, List<Map> values) {
@@ -65,8 +67,9 @@ import java.util.Map;
         plusItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                UserData userData =new UserData();
                 int sum = Integer.parseInt(item.get("Count").toString())+1;
-                String insert = " UPDATE products SET Count=(?) WHERE ProductId =(?)";
+                String insert = " UPDATE "+userData.name+" SET Count=(?) WHERE ProductId =(?)";
                 db.execSQL(insert, new Object[]{sum,item.get("ProductId")});
                 List<Map> sqlData=singy.getAllData(db);
                 values.clear();
@@ -105,10 +108,10 @@ import java.util.Map;
         int sum = Integer.parseInt(item.get("Count").toString())-1;
         String insert = "";
         if(sum>0) {
-            insert = " UPDATE products SET Count=(?) WHERE ProductId =(?)";
+            insert = " UPDATE "+userData.name+" SET Count=(?) WHERE ProductId =(?)";
             db.execSQL(insert, new Object[]{sum,item.get("ProductId")});
         } else {
-            insert = "DELETE FROM products WHERE ProductId =(?)";
+            insert = "DELETE FROM "+userData.name+ " WHERE ProductId =(?)";
             db.execSQL(insert, new Object[]{item.get("ProductId")});
         }
     }

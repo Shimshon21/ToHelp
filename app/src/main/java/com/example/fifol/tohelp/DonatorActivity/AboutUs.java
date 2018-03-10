@@ -1,4 +1,4 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.DonatorActivity;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.example.fifol.tohelp.R;
 
 public class AboutUs extends AppCompatActivity {
 

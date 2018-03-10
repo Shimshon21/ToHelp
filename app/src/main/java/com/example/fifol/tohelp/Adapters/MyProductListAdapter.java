@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fifol.tohelp.MyProductList;
+import com.example.fifol.tohelp.DonatorActivity.MyProductList;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.MyProdutsData;
 import com.example.fifol.tohelp.Utils.SingletonUtil;

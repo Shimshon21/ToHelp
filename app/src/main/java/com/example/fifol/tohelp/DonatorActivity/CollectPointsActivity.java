@@ -1,4 +1,4 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.DonatorActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.fifol.tohelp.Adapters.CollectPointsAdapter;
+import com.example.fifol.tohelp.R;
 
 import java.util.ArrayList;
 

@@ -25,11 +25,7 @@ android:layout_width="match_parent">
         android:layout_below="@id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <FrameLayout
-            android:id="@+id/deliveryDetails"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"></FrameLayout>
+
 
 
         <ListView
@@ -39,9 +35,12 @@ android:layout_width="match_parent">
             android:divider="#FFCC00"
             android:dividerHeight="0px"
             android:layoutDirection="ltr"
-
-
             />
+        <FrameLayout
+            android:id="@+id/deliveryDetails"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"></FrameLayout>
     </RelativeLayout>
 
 

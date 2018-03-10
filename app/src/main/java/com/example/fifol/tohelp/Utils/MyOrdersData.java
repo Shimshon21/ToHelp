@@ -7,16 +7,17 @@ import java.util.Map;
  */
 
 public class MyOrdersData {
-  public   String _id;
-   public String doanatorName;
-   public String address;
-   public String phone;
+  public   String _id,
+   doanatorName,
+    address,
+  phone,
+  process;
    public Map<String,Integer> products;
 
 
     public MyOrdersData(){}
 
-    public MyOrdersData(String id,String doanatorName,String address,Map<String,Integer> products,String phone){
+    public MyOrdersData(String id,String doanatorName,String address,Map<String,Integer> products,String phone,String process){
         this._id = id;
         this.phone = phone;
         this.doanatorName = doanatorName;

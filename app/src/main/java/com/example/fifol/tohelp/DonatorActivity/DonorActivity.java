@@ -1,14 +1,12 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.DonatorActivity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.view.View;
+
+import com.example.fifol.tohelp.R;
 
 /**
  * Created by shim-polak on 2/26/2018.

@@ -1,12 +1,10 @@
-package com.example.fifol.tohelp;
+package com.example.fifol.tohelp.DonatorActivity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -22,12 +20,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.fifol.tohelp.R;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-
-import java.io.IOException;
 
 public class ScanBarCode extends android.support.v4.app.Fragment {
 
@@ -117,7 +114,6 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
         });
     }
     public void finishFragment(Barcode barcode) {
-        //todo fix  bug barcode scanned twice.
         if (getActivity() != null) {
             ((MyProductList) getActivity()).getBarCode(barcode);
             //Prevent from camrasource to keep working in background.

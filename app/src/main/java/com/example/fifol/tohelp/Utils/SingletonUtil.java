@@ -42,20 +42,23 @@ public class SingletonUtil {
 
     //Get all data in table products
     //@return List<Map> the data from table 'products'
-    public List<Map> getAllData(SQLiteDatabase db){
-        List<Map> sqlData=new ArrayList<>();
-        Cursor sqlProducts = db.rawQuery("Select * from products",null);
-        for (sqlProducts.moveToFirst();!sqlProducts.isAfterLast();sqlProducts.moveToNext()){
-            Map<String,Object> map = new HashMap<>();
-            map.put(sqlProducts.getColumnName(4) ,sqlProducts.getString(4));
-            map.put(sqlProducts.getColumnName(1) ,sqlProducts.getString(1));
-            map.put(sqlProducts.getColumnName(2) ,sqlProducts.getString(2));
-            map.put(sqlProducts.getColumnName(3) ,sqlProducts.getString(3));
-            map.put(sqlProducts.getColumnName(5),sqlProducts.getInt(5));
-            System.out.println(sqlProducts.getColumnName(3) +""+sqlProducts.getString(3) +" " +sqlProducts.getColumnName(2)+" " +sqlProducts.getString(2)+" "+sqlProducts.getColumnName(1) +""+sqlProducts.getString(1)+"");
-            sqlData.add(map);
+    public List<Map> getAllData(SQLiteDatabase db) {
+        List<Map> sqlData = new ArrayList<>();
+        UserData userData =new UserData();
+        Cursor sqlProducts = db.rawQuery("Select * from "+userData.name,null);
+        System.out.println(sqlProducts);
+            for (sqlProducts.moveToFirst(); !sqlProducts.isAfterLast(); sqlProducts.moveToNext()) {
+                Map<String, Object> map = new HashMap<>();
+                System.out.println(map);
+                map.put(sqlProducts.getColumnName(4), sqlProducts.getString(4));
+                map.put(sqlProducts.getColumnName(1), sqlProducts.getString(1));
+                map.put(sqlProducts.getColumnName(2), sqlProducts.getString(2));
+                map.put(sqlProducts.getColumnName(3), sqlProducts.getString(3));
+                map.put(sqlProducts.getColumnName(5), sqlProducts.getInt(5));
+                System.out.println(sqlProducts.getColumnName(3) + "" + sqlProducts.getString(3) + " " + sqlProducts.getColumnName(2) + " " + sqlProducts.getString(2) + " " + sqlProducts.getColumnName(1) + "" + sqlProducts.getString(1) + "");
+                sqlData.add(map);
+            }
+            return sqlData;
         }
-        return sqlData;
-    }
+        }
 
-}
