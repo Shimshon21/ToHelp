@@ -33,14 +33,19 @@
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="5.3"
+                android:layout_weight="4"
                 />
 
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.7"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:background="@drawable/blue_button"
                 android:gravity="center_horizontal"

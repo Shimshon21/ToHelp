@@ -24,7 +24,7 @@ public class AboutUs extends AppCompatActivity {
         setContentView(R.layout.about_us);
 
         video = findViewById(R.id.videoView);
-        videoPath = Uri.parse("android.resource://" +getPackageName() + "/" + R.raw.shindown);
+        videoPath = Uri.parse("android.resource://" +getPackageName() + "/" + R.raw.songexample);
         scrollTxt = findViewById(R.id.scrollTxt);
         mediaController = new MediaController(this);
         videoLenght = 0;
