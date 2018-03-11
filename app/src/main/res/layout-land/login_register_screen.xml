@@ -78,6 +78,7 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:text="הרשם"
+                    android:onClick="logIn"
                     />
 
                 <Button
