@@ -29,9 +29,9 @@
 =======
         <activity android:name=".DeliveriesActivities.DeliveryScreen"/>
         <activity android:name=".DeliveriesActivities.CurrentMissionScreen"/>
-        <activity android:name=".DeliveriesActivities.MissionsScreen"/>
-        <activity android:name=".DeliveriesActivities.Test"/>
->>>>>>> d8c1257ed383319a4ef531633b421e5961121c64
+        <activity android:name=".DeliveriesActivities.MissionsScreen"/><![CDATA[
+        >>>>>>> d8c1257ed383319a4ef531633b421e5961121c64
+    ]]>
     </application>
 
 </manifest>

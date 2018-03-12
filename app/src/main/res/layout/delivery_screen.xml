@@ -73,7 +73,7 @@
         android:layout_gravity="bottom"
         android:paddingVertical="20dp"
         android:gravity="center"
-        android:onClick="choseMissionClick"
+        android:onClick="logOut"
         android:layout_alignParentBottom="true"
         >
 
