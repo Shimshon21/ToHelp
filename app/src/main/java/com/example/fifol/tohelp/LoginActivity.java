@@ -17,6 +17,7 @@ import com.cloudant.client.org.lightcouch.NoDocumentException;
 import com.example.fifol.tohelp.DeliveriesActivities.DeliveryScreen;
 import com.example.fifol.tohelp.DonatorActivity.DonorActivity;
 import com.example.fifol.tohelp.Utils.UserData;
+import com.example.fifol.tohelp.WareHouseActivities.GetAllStock;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,9 +48,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_register_screen);
+        new GetAllStock().getCompanyaData("materna");
         name = findViewById(R.id.userName);
         password = findViewById(R.id.password);
-     //   httpWithAsync();
     }
 
 
@@ -63,14 +64,14 @@ public class LoginActivity extends Activity {
         System.out.println("Logged in presssed");
         new AsyncTask<String, Void, UserData>() {
             @Override
-            protected UserData doInBackground(String... strings) {
+            protected UserData doInBackground(String... strings){
                 System.out.println("First  "+strings[0]);
                 Database db = client.database(DB_NAME_TEXT, false);
                 UserData userData ;
                 try {
                  JSONObject  logData = new JSONObject(), qury = new JSONObject(), qury2 = new JSONObject(), id = new JSONObject(), pass = new JSONObject();
-                    qury2.put("$eq",strings[1]);
                     qury.put("$eq",strings[0]);
+                    qury2.put("$eq",strings[1]);
                     id.put("_id",qury);
                     pass.put("password",qury2);
                     JSONArray array =new JSONArray();
@@ -81,7 +82,6 @@ public class LoginActivity extends Activity {
                     e.printStackTrace();
                     userData=null;
                 }if(userData!= null) {
-                    System.out.println("Second");
                     return userData;
                 }
                 else  return null;
@@ -89,7 +89,6 @@ public class LoginActivity extends Activity {
             @Override
             protected void onPostExecute(UserData loggedUser) {
                 super.onPostExecute(loggedUser);
-                System.out.println("Third");
                 if(loggedUser!=null ){
                     UserData.setCurrentUser(loggedUser);
                     switch (loggedUser.role){
@@ -113,6 +112,7 @@ public class LoginActivity extends Activity {
         }.execute(name.getText().toString(),password.getText().toString());
     }
 
+    //Todo register user.
     public void register(View view){
         if(password.getText().length() < 4  ||  name.getText().length() < 4 ){
             Toast.makeText(this, "password and username must contain minimum of  4 chars", Toast.LENGTH_LONG).show();

@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class MyOrdersData implements Parcelable {
   public String _id, doanatorName,
+            _rev,
           address,
           phone,
           process;
@@ -19,8 +20,9 @@ public class MyOrdersData implements Parcelable {
 
     public MyOrdersData(){}
 
-    public MyOrdersData(String id,String doanatorName,String address,Map<String,Integer> products,String phone,String process){
+    public MyOrdersData(String id,String _rev,String doanatorName,String address,Map<String,Integer> products,String phone,String process){
         this._id = id;
+        this._rev = _rev;
         this.phone = phone;
         this.doanatorName = doanatorName;
         this.address = address;

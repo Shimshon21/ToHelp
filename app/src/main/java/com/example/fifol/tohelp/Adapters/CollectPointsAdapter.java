@@ -35,6 +35,5 @@ public class CollectPointsAdapter extends ArrayAdapter<String> {
             String[] address = text.split("\n");
             return address[2].replace(" ","%20");
         }
-
     }
 

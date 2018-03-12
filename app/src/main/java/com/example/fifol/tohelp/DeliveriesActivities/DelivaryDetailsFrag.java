@@ -124,7 +124,7 @@ public class DelivaryDetailsFrag extends Fragment {
                     for (Map myMap : ownedProducts) {
                         products.put(myMap.get("ProductTitle") + "_" + myMap.get("ProductDesc"), Integer.parseInt(myMap.get("Count").toString()));
                     }
-                    final MyOrdersData myOrdersData = new MyOrdersData( currentUser._id,currentUser.name, currentUser.adress, products,currentUser.phone,"system");
+                    final MyOrdersData myOrdersData = new MyOrdersData( currentUser._id,currentUser._rev,currentUser.name, currentUser.adress, products,currentUser.phone,"system");
                     try {
                         db.save(myOrdersData);
                     }catch (DocumentConflictException e){

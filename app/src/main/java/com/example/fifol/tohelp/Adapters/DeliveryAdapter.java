@@ -31,15 +31,19 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DeliveryAdapter extends ArrayAdapter<String> {
         private final Context context;
         private final List<MyOrdersData> values;
-    //CourierData courierData = CourierData.getCurrentCourier();
-    UserData courierData = UserData.getCurrentUser();
-    CloudantClient client = CloudentKeys.getClientBuilder();
-    String COURIERS_MISSION = "users";
+
+        private UserData courierData = UserData.getCurrentUser();
+
+        private CloudantClient client = CloudentKeys.getClientBuilder();
+        private String COURIERS_MISSION = "users";
+
 
         public DeliveryAdapter(Context context, List<MyOrdersData> values) {
             super(context,R.layout.delivery_row);
@@ -48,9 +52,7 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
         }
 
     @Override
-    public int getCount() {
-        return values.size();
-    }
+    public int getCount() {return values.size();}
 
     @Override
         public View getView(final int position, final View convertView, ViewGroup parent) {
@@ -58,17 +60,19 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
             View rowView = inflater.inflate(R.layout.delivery_row, parent, false);
             TextView desc = rowView.findViewById(R.id.description);
             TextView address = rowView.findViewById(R.id.address);;
-            Button waze = rowView.findViewById(R.id.waze);
+            Button confirmOrder = rowView.findViewById(R.id.waze);
             Button details = rowView.findViewById(R.id.details);
-            //Todo add elfi waze integration.
-            waze.setOnClickListener(new View.OnClickListener() {
+            confirmOrder.setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 public void onClick(View view) {
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... voids) {
-                                courierData.mission = values.get(position);
+                                Map missionOrder = new HashMap();
+                                    missionOrder.put("_id",values.get(position)._id);
+                                    missionOrder.put("_rev", values.get(position)._rev);
+                                courierData.mission = missionOrder;
                                 Database db = client.database(COURIERS_MISSION,false);
                                 db.update(courierData);
                                 return null;

@@ -99,7 +99,9 @@
                 android:id="@+id/products"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layoutDirection="rtl">
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                android:textAlignment="textEnd">
             </ListView>
 
             <RelativeLayout
