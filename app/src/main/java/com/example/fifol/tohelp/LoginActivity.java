@@ -142,7 +142,7 @@ public class LoginActivity extends Activity {
             }
 
            //TODO fix the FileNotFoundException that received from the http request
-           //Send http request to trigger ibm actions
+           //when Sending http request(POST) to the trigger EndPoint ibm actions , i am getting FileNotFoundException
             public void sendHttp() {
                 String url = "https://openwhisk.ng.bluemix.net/api/v1/namespaces/1tamir198_tamirSpace/actions/testing_trigger";
                 //api key that i got from blumix EndPoins
