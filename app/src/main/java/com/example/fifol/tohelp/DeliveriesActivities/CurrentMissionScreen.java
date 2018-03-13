@@ -55,7 +55,7 @@ public class CurrentMissionScreen extends AppCompatActivity {
                     try {
                         jsonStr = new JSONObject(new Gson().toJson(courierData.mission));
                         final Database db = client.database(ORDERS_DATABASE, false);
-                        ordersData = db.find(MyOrdersData.class, jsonStr.getString("_id"));
+                        ordersData = db.find(MyOrdersData.class, jsonStr.getString("donatorId"));
                         System.out.println(ordersData._id + "  " + ordersData.address + " got from order data");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -124,12 +124,19 @@ public class CurrentMissionScreen extends AppCompatActivity {
                         final Database dbUsers = client.database(COURIER_USERS, false);
                         courierData.mission = "{}";
                         dbUsers.update(courierData);
-                        ordersData.process = "מוצר הגיע ליעד";
-                        db.update(ordersData);
+                        db.remove(ordersData);
                         Log.d("initilize", "mission had been restart ");
+                        break;
                 }
                 System.out.println("סטאטוס השתנה בהצלחה!!");
                 return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if(!courierData.mission.equals("{}"))
+                status.setText(ordersData.process);
+                else finish();
             }
         }.execute();
     }
