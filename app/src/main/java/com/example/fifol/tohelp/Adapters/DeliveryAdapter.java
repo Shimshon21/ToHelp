@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.example.fifol.tohelp.DeliveriesActivities.DeliveryScreen;
 import com.example.fifol.tohelp.DeliveriesActivities.MissionDetails;
 import com.example.fifol.tohelp.DeliveriesActivities.MissionsScreen;
 import com.example.fifol.tohelp.R;
@@ -66,25 +67,27 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 public void onClick(View view) {
+                    if(courierData.mission.equals("{}")) {
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... voids) {
                                 Map missionOrder = new HashMap();
-                                    missionOrder.put("_id",values.get(position)._id);
-                                    missionOrder.put("_rev", values.get(position)._rev);
+                                missionOrder.put("donatorId", values.get(position)._id);
+                                missionOrder.put("rev", values.get(position)._rev);
                                 courierData.mission = missionOrder;
-                                Database db = client.database(COURIERS_MISSION,false);
+                                Database db = client.database(COURIERS_MISSION, false);
                                 db.update(courierData);
                                 return null;
-                        }
+                            }
 
                             @Override
                             protected void onPostExecute(Void aVoid) {
                                 super.onPostExecute(aVoid);
-                                Toast.makeText(context,"משימה עודכנה למשימה נוכחית",Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "משימה עודכנה למשימה נוכחית", Toast.LENGTH_LONG).show();
                             }
                         }.execute();
-
+                    }else {
+                        Toast.makeText(context,"משימה כבר קיימת",Toast.LENGTH_LONG).show();}
                 }
              });
             details.setOnClickListener(new View.OnClickListener() {
