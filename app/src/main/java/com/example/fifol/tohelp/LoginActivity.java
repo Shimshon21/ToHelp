@@ -88,12 +88,12 @@ public class LoginActivity extends Activity {
                 //api key that i got from blumix EndPoins
                        String apiKey = "530f095a-675e-4e1c-afe0-4b421201e894:0HriiSRoYWohJ4LGOjc5sGAhHvAka1gwASMlhRN8kA5eHgNu8ouogt8BbmXtX21N";
                try {
-                   JSONObject jsonObject = new JSONObject().put("openwhisk.ng.bluemix.net" ,"c1165fd1-f4cf-4a62-8c64-67bf20733413:hdVl64YRzbHBK0n2SkBB928cy2DUO5XB3yDbuXhQ1uHq8Ir0dOEwT0L0bqMeWTTX");
-                   //String res = (new HttpRequest(url)).prepare(HttpRequest.Method.POST).withData(apiKey).sendAndReadString();
-                   String res = new HttpRequest(url).prepare(HttpRequest.Method.POST).withData(jsonObject.toString()).sendAndReadString();
-                       System.out.println(res  + "***********");
+                   //JSONObject jsonObject = new JSONObject().put("openwhisk.ng.bluemix.net" ,"c1165fd1-f4cf-4a62-8c64-67bf20733413:hdVl64YRzbHBK0n2SkBB928cy2DUO5XB3yDbuXhQ1uHq8Ir0dOEwT0L0bqMeWTTX");
+                   String res = (new HttpRequest(url)).prepare(HttpRequest.Method.POST).withData(apiKey).sendAndReadString();
+                   //String res = new HttpRequest(url).prepare(HttpRequest.Method.POST).withData(jsonObject.toString()).sendAndReadString();
+                       System.out.println( res + "***********");
 
-                           } catch (IOException | JSONException exception) {
+                           } catch ( IOException exception) {
                         exception.printStackTrace();
                         System.out.println(exception + "   some some some");
                        System.out.println("catched error from response ***********");
