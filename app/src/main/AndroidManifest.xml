@@ -30,10 +30,23 @@
         <activity android:name=".DeliveriesActivities.DeliveryScreen" />
         <activity android:name=".DeliveriesActivities.CurrentMissionScreen" />
         <activity android:name=".DeliveriesActivities.MissionsScreen" />
+
+        <service android:name=".MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
         <![CDATA[
         >>>>>>> d8c1257ed383319a4ef531633b421e5961121c64
     ]]>
-        <activity android:name=".WarehouseActivity"></activity>
+        <activity android:name=".WarehouseActivity" />
+
+        <service
+            android:name=".WareHouseActivities.MyFirebaseSerivce">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
