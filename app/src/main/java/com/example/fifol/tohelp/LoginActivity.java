@@ -59,6 +59,15 @@ public class LoginActivity extends Activity {
         startActivity(i);
     }
 
+    //Todo register user.
+    public void register(View view){
+        System.out.println("testing");
+       // Intent i = new Intent(this, Test.class);
+       // startActivity(i);
+
+    }
+
+
     @SuppressLint("StaticFieldLeak")
     public void logIn(View view) {
         System.out.println("Logged in presssed");
@@ -112,14 +121,6 @@ public class LoginActivity extends Activity {
         }.execute(name.getText().toString(),password.getText().toString());
     }
 
-    //Todo register user.
-    public void register(View view){
-        if(password.getText().length() < 4  ||  name.getText().length() < 4 ){
-            Toast.makeText(this, "password and username must contain minimum of  4 chars", Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(this,"registered",Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
    /* //TODO pull the data from cloudant and check if the user exists

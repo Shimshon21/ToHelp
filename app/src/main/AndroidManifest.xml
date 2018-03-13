@@ -30,6 +30,7 @@
         <activity android:name=".DeliveriesActivities.DeliveryScreen" />
         <activity android:name=".DeliveriesActivities.CurrentMissionScreen" />
         <activity android:name=".DeliveriesActivities.MissionsScreen" />
+        <activity android:name=".Test" />
 
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
@@ -41,12 +42,13 @@
     ]]>
         <activity android:name=".WarehouseActivity" />
 
-        <service
-            android:name=".WareHouseActivities.MyFirebaseSerivce">
+        <service android:name=".WareHouseActivities.MyFirebaseSerivce">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>
