@@ -25,6 +25,7 @@ import com.cloudant.client.api.Database;
 import com.example.fifol.tohelp.Adapters.CategoryGridAdapter;
 import com.example.fifol.tohelp.Adapters.ProductGridAdapter;
 import com.example.fifol.tohelp.R;
+import com.example.fifol.tohelp.Utils.CloudentKeys;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.apache.commons.io.IOUtils;
@@ -42,19 +43,11 @@ import java.nio.charset.Charset;
 
 public class PickProductActivity extends AppCompatActivity {// NOT USED!!!!!!!!!!!!!!
     public static final int PREMISSION_REQUEST = 200;
-    final String TEXT_API_KEY = "aturedishavingrooletille";
-    final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";
-    final String DB_USER_NAME = "5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix";
     final String DB_NAME_TEXT = "tamal_db";
     FrameLayout layout;
-    final CloudantClient client = ClientBuilder.account(DB_USER_NAME)
-            .username(TEXT_API_KEY)
-            .password(TEXT_API_SECRET)
-            .build();
-
+    final CloudantClient client = CloudentKeys.getClientBuilder();
     Button scannerBtn;
     String resultBarCode;
-
     RecyclerView recyclerView,recyclerView2;
     JSONObject mainJOb;
     String company = "מטרנה",type = "חלבי";
@@ -72,26 +65,22 @@ public class PickProductActivity extends AppCompatActivity {// NOT USED!!!!!!!!!
         recyclerView = (findViewById(R.id.categoty));
         recyclerView2 = (findViewById(R.id.mainGrid));
         scannerBtn = findViewById(R.id.scanBtn);
-
         GridLayoutManager layoutGrid = new GridLayoutManager(this, 1, LinearLayoutManager.VERTICAL, false);
         GridLayoutManager layoutGrid2 = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutGrid);
         recyclerView2.setLayoutManager(layoutGrid2);
-
-        //readDb();
         setAdapter();
-
     }
 
     //Configure grid list adapter.
     public void setAdapter() {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         categoryGridAdapter = new CategoryGridAdapter(this,getCompanies());
         productGridAdapterB = new ProductGridAdapter(this,getTypes("מטרנה"));
             recyclerView.setAdapter(categoryGridAdapter);
         recyclerView2.setAdapter(productGridAdapterB);
     }
+
 
     public JSONArray getCompanies(){
         JSONArray companies = null;
@@ -233,6 +222,7 @@ public class PickProductActivity extends AppCompatActivity {// NOT USED!!!!!!!!!
             }
         }.execute();
     }
+
     public String convert(InputStream inputStream, Charset charset) throws IOException {
         return IOUtils.toString(inputStream, charset);
     }

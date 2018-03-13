@@ -40,9 +40,11 @@
                     android:id="@+id/input_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
                     android:hint="שם"
-                    android:text="ישראל ישראלי"/>
+                    android:singleLine="true"
+                    android:text="ישראל ישראלי"
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="end"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_address"
@@ -55,7 +57,9 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:hint="כתובת"
-                    android:text="שוהם 5, רמת גן"/>
+                    android:text="שוהם 5, רמת גן"
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="end"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -69,7 +73,9 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:hint="אימל"
-                    android:text="שוהם 5, רמת גן"/>
+                    android:text="שוהם 5, רמת גן"
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="end"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout

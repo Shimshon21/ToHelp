@@ -30,6 +30,8 @@ import com.example.fifol.tohelp.Adapters.MyBasketListAdapter;
 import com.example.fifol.tohelp.Adapters.MyProductListAdapter;
 import com.example.fifol.tohelp.DeliveriesActivities.DelivaryDetailsFrag;
 import com.example.fifol.tohelp.R;
+import com.example.fifol.tohelp.Utils.CloudentKeys;
+import com.example.fifol.tohelp.Utils.MyOrdersData;
 import com.example.fifol.tohelp.Utils.MyProdutsData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
 import com.example.fifol.tohelp.Utils.SingletonUtil;
@@ -60,14 +62,12 @@ public class MyProductList extends AppCompatActivity{
     public ListView listview;
     ProgressBar progressBar;
     MyBasketListAdapter adapter;
+    UserData currentUser = UserData.getCurrentUser();
 
-    final String TEXT_API_KEY = "aturedishavingrooletille";
-    final String TEXT_API_SECRET = "b48a197d344b364faef1861d74d4385945f4d49c";
-    final String DB_USER_NAME = "5163dd96-e2e4-42f6-8956-24a8ba1360ab-bluemix";
     final String DB_NAME_TEXT = "products";
 
 
-   public final CloudantClient client = ClientBuilder.account(DB_USER_NAME).username(TEXT_API_KEY).password(TEXT_API_SECRET).build();
+   public final CloudantClient client = CloudentKeys.getClientBuilder();
     SingletonUtil singy = SingletonUtil.getSingy();
     public SQLiteDatabase productsSqliteDb;
 
@@ -76,11 +76,13 @@ public class MyProductList extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_product_list);
-        productsSqliteDb = new MySqlLite(this).getReadableDatabase();
+        productsSqliteDb = new MySqlLite(this).getWritableDatabase();
         cameraView = findViewById(R.id.cameraView);
         listview = findViewById(R.id.productListView);
         progressBar = findViewById(R.id.productsLoading);
         final List<Map> productSql = singy.getAllData(productsSqliteDb);
+
+        //Get / Save images  and setting adapter.
             new AsyncTask<Void, Void, List<Map>>() {
                 @Override
                 protected List<Map> doInBackground(Void... avoid) {
@@ -164,22 +166,17 @@ public class MyProductList extends AppCompatActivity{
 
 
     public void sendProductOrder(View view) {
-       elfiTransaction();
-    }
-    private void elfiTransaction() {
-       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.productListLay,new DelivaryDetailsFrag());
         transaction.commit();
-        //writeDB();
     }
 
-
-    //Get one document from data by id.
+    //Get one document from data by id from bar code scanner.
     @SuppressLint("StaticFieldLeak")
     public void getDataById(final String data){
-        new AsyncTask<Void,Void,List<MyProdutsData>>(){
+        new AsyncTask<Void,Void,MyProdutsData>(){
             @Override
-            protected List<MyProdutsData> doInBackground(Void... voids) {
+            protected MyProdutsData doInBackground(Void... voids) {
                 Database db = client.database(DB_NAME_TEXT, false);
                 try{
                     dbData = db.find(MyProdutsData.class,data);
@@ -189,36 +186,41 @@ public class MyProductList extends AppCompatActivity{
                 }
                 if(dbData != null) {
                     setFlyweightAttchImgs(dbData);
-                    List<MyProdutsData> results = new ArrayList<>();
-                    results.add(dbData);
-                    return results;
+                    MyProdutsData item = dbData;
+                    return item;
                 }return null;
             }
+
             @Override
-            protected void onPostExecute(List<MyProdutsData> results) {
-                //Todo - increase count coloumn by one if the product exist else added to data.
+            protected void onPostExecute(MyProdutsData results) {
                 if(results!=null) {
-                    UserData userData =new UserData();
-                    MyProdutsData item = results.get(0);
-                    Cursor cursor = productsSqliteDb.rawQuery("SELECT Count FROM "+userData.name+ " WHERE ProductId = (?)",new String[]{item._id});
-                    if (cursor.moveToFirst()){
-                        String insert2 = "INSERT OR REPLACE INTO "+userData.name+"(ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),((SELECT Count FROM products WHERE ProductId = (?))+'1'))";
-                        String url =singy.getImageAttachment(item);
-                        productsSqliteDb.execSQL(insert2,new String[]{item._id,url,item.desc,item.title,item._id});
-                    }else {
-                        String insert = "INSERT INTO "+userData.name+" (ProductId,ProductImage,ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),'1')";
-                        String url =singy.getImageAttachment(item);
-                        productsSqliteDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
-                    }
+
+                    MyProdutsData item = results;
+                    setOrUpdateSql(item,currentUser);
                     //INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ('123','someimagae','awsome','title',(count = '1' Where (SELECT Count FROM products WHERE ProductId = '123')IS NULL +1))
                    List<Map> productSql = singy.getAllData(productsSqliteDb);
                     adapter.swap(productSql);
-                    cursor.close();
+
                 }else {
                     new AlertDialog.Builder(MyProductList.this).setTitle("משהו השתבש!:            ").setMessage("מוצר זה אינו קיים במערכת.").show();
                 }
             }
         }.execute();
+    }
+
+    //Added into user name table values , or update existed table values.
+    private void setOrUpdateSql(MyProdutsData item, UserData userData) {
+        Cursor cursor = productsSqliteDb.rawQuery("SELECT Count FROM "+userData.name+ " WHERE ProductId = (?)",new String[]{item._id});
+        if (cursor.moveToFirst()){
+            String insert2 = "INSERT OR REPLACE INTO "+userData.name+"(ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),((SELECT Count FROM products WHERE ProductId = (?))+'1'))";
+            String url =singy.getImageAttachment(item);
+            productsSqliteDb.execSQL(insert2,new String[]{item._id,url,item.desc,item.title,item._id});
+        }else {
+            String insert = "INSERT INTO "+userData.name+" (ProductId,ProductImage,ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),'1')";
+            String url =singy.getImageAttachment(item);
+            productsSqliteDb.execSQL(insert,new String[]{item._id,url,item.desc,item.title});
+        }
+        cursor.close();
     }
 
     //Set search by company name from database.
@@ -280,7 +282,5 @@ public class MyProductList extends AppCompatActivity{
         }.execute();
         return dbListData;
     }
-    public  void getAdapter(List<Map> data){
-       adapter.swap(data);
-    }
+
 }

@@ -81,7 +81,7 @@ public class GetDataBlumix extends AsyncTask<Void,Void,Void> {
                 setFlyweightImgs(dbData);
                 return null;
             }
-        }.execute().notify();
+        }.execute();
         System.out.println("data returned !!!"+dbData._id);
         return dbData;
     }

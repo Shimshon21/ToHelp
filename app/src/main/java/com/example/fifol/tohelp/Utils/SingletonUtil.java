@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class SingletonUtil {
    public static SingletonUtil singy = new SingletonUtil();
+   UserData currentUser = UserData.getCurrentUser();
 
    private SingletonUtil(){
 
@@ -44,8 +45,7 @@ public class SingletonUtil {
     //@return List<Map> the data from table 'products'
     public List<Map> getAllData(SQLiteDatabase db) {
         List<Map> sqlData = new ArrayList<>();
-        UserData userData =new UserData();
-        Cursor sqlProducts = db.rawQuery("Select * from "+userData.name,null);
+        Cursor sqlProducts = db.rawQuery("Select * from "+currentUser.name,null);
         System.out.println(sqlProducts);
             for (sqlProducts.moveToFirst(); !sqlProducts.isAfterLast(); sqlProducts.moveToNext()) {
                 Map<String, Object> map = new HashMap<>();

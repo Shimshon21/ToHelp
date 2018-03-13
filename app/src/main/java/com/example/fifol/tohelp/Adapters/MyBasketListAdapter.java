@@ -28,8 +28,9 @@ import java.util.Map;
         private final Context context;
         private List<Map> values;
         SingletonUtil singy = SingletonUtil.getSingy();
-        UserData userData =new UserData();
+        UserData userData = UserData.currentUser;
         SQLiteDatabase db ;
+
 
         public MyBasketListAdapter(Context context, List<Map> values) {
             super(context, R.layout.my_product_row);
@@ -39,14 +40,14 @@ import java.util.Map;
             db= new MySqlLite(context).getReadableDatabase();
         }
 
-    @Override
-    public int getCount() {
+        @Override
+         public int getCount() {
       return   values.size();
     }
 
 
-    @NonNull
-    @Override
+         @NonNull
+         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             final Map item = values.get(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -63,11 +64,11 @@ import java.util.Map;
     private void setListners(View convertView, final Map<String,Object>item) {
         Button removeItem = convertView.findViewById(R.id.removeItemBtn);
         Button plusItem = convertView.findViewById(R.id.addItemBtn);
+
         //Add  column 'Count' by one.
         plusItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserData userData =new UserData();
                 int sum = Integer.parseInt(item.get("Count").toString())+1;
                 String insert = " UPDATE "+userData.name+" SET Count=(?) WHERE ProductId =(?)";
                 db.execSQL(insert, new Object[]{sum,item.get("ProductId")});

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.cloudant.client.org.lightcouch.DocumentConflictException;
 import com.example.fifol.tohelp.DonatorActivity.MyProductList;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.MyOrdersData;
@@ -43,7 +44,7 @@ public class DelivaryDetailsFrag extends Fragment {
     EditText name,address,phone,email ;
     SQLiteDatabase productsSqliteDb ;
     final String DB_NAME_ORDERS="donaters_delivery_orders";
-    UserData currentUser = new UserData();
+    UserData currentUser =  UserData.getCurrentUser();
     ListView productslist;
 
 
@@ -51,7 +52,7 @@ public class DelivaryDetailsFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        productsSqliteDb = new MySqlLite(getContext()).getReadableDatabase();
+        productsSqliteDb = new MySqlLite(getContext()).getWritableDatabase();
         return inflater.inflate(R.layout.confirm_delivery_fragment,container,false);
     }
 
@@ -65,18 +66,17 @@ public class DelivaryDetailsFrag extends Fragment {
         confirmDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            writeDB();
+            addDonationRequest();
             }
         });
-
     }
 
+    //set text for local EditText Views.
     private void setViewsTexts() {
-
         name.setText(currentUser.name);
-        email.setText(currentUser.email);
-        phone.setText(currentUser.telephone);
-        address.setText(currentUser.address);
+        email.setText(currentUser._id);
+        phone.setText(currentUser.phone);
+        address.setText(currentUser.adress);
     }
 
     //Set list of products text before conformation.
@@ -104,44 +104,53 @@ public class DelivaryDetailsFrag extends Fragment {
         closeFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            closeFragment();
+
             }
         });
     }
 
     //*****Write into DB*****//
     @SuppressLint("StaticFieldLeak")
-    private void writeDB(){
+    private void addDonationRequest(){
         if(productsSqliteDb.rawQuery("Select * from "+currentUser.name,null).moveToFirst()) {
            MyProductList myProductList = (MyProductList)getActivity();
           final CloudantClient client = myProductList.client ;
-            new AsyncTask<Void, Void, Void>() {
+            new AsyncTask<Void, Void, Boolean>() {
                 @Override
-                protected Void doInBackground(Void... voids) {
-                    //return databases.toString();
+                protected Boolean doInBackground(Void... voids) {
                     final Database db = client.database(DB_NAME_ORDERS, false);
                     Map<String, Integer> products = new HashMap<>();
                     List<Map> ownedProducts = singy.getAllData(productsSqliteDb);
-                    for (Map<String, Object> myMap : ownedProducts) {
+                    for (Map myMap : ownedProducts) {
                         products.put(myMap.get("ProductTitle") + "_" + myMap.get("ProductDesc"), Integer.parseInt(myMap.get("Count").toString()));
                     }
-                    final MyOrdersData myOrdersData = new MyOrdersData( currentUser.email,currentUser.name, currentUser.address, products,currentUser.telephone,"system");
-                    //Todo fix existed document bug.
-                    db.save(myOrdersData);
+                    final MyOrdersData myOrdersData = new MyOrdersData( currentUser._id,currentUser._rev,currentUser.name, currentUser.adress, products,currentUser.phone,"system");
+                    try {
+                        db.save(myOrdersData);
+                    }catch (DocumentConflictException e){
+                        e.printStackTrace();
+                        System.out.println("request alrdy assigned.");
+                        return false;
+                    }
                     Log.e("TAG", "doInBackground: cloudant data was saved.... ");
-                    return null;
+                    return true;
                 }
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
+                protected void onPostExecute(Boolean aVoid) {
                     System.out.println("****************pushed data successfully***************************");
-                    new AlertDialog.Builder(getContext()).setTitle("תרומה התבצאה:").setMessage("תרומתך נקלטה במערכת אנחנו נשלח הודעה ששליח יגיע אליך.").show();
+                    if(aVoid) {
+                        new AlertDialog.Builder(getContext()).setTitle("תרומה התבצעה:").setMessage("תרומתך נקלטה במערכת אנחנו נשלח הודעה ששליח יגיע אליך.").show();
+                    }else {
+                        new AlertDialog.Builder(getContext()).setTitle("תרומתך נרשמה כבר למערכת").setMessage("לא ניתן לעדכן תרומה, לברורים התקשר ל-0565498415").show();
+                    }
                     closeFragment();
                 }
             }.execute();
 
         }else Toast.makeText(getContext(),"אנא הוסף מוצר לרשימה.",Toast.LENGTH_SHORT).show();
     }
+
 
     private void closeFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
