@@ -33,6 +33,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
    static CameraSource cameraSource;
     SurfaceHolder holder;
     Button btnCloseFrag;
+   static boolean alrdyScanned =false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        alrdyScanned=false;
         btnCloseFrag = view.findViewById(R.id.closeBtn);
         btnCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,20 +118,23 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
     public void finishFragment(Barcode barcode) {
         if (getActivity() != null) {
             ((MyProductList) getActivity()).getBarCode(barcode);
-            //Prevent from camrasource to keep working in background.
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if(ScanBarCode.cameraSource != null) {
-                        cameraSource.stop();
+            alrdyScanned = true;
+            if (alrdyScanned) {
+                //Prevent from camrasource to keep working in background.
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ScanBarCode.cameraSource != null) {
+                            cameraSource.stop();
+                        }
                     }
-                }
-            });
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(ScanBarCode.this);
-            fragmentTransaction.commit();
+                });
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(ScanBarCode.this);
+                fragmentTransaction.commit();
+            }
         }
         }
     }
