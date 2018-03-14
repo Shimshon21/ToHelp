@@ -62,8 +62,8 @@ public class LoginActivity extends Activity {
     //Todo register user.
     public void register(View view){
         System.out.println("testing");
-       // Intent i = new Intent(this, Test.class);
-       // startActivity(i);
+        Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
 
     }
 

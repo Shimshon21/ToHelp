@@ -30,7 +30,7 @@
         <activity android:name=".DeliveriesActivities.DeliveryScreen" />
         <activity android:name=".DeliveriesActivities.CurrentMissionScreen" />
         <activity android:name=".DeliveriesActivities.MissionsScreen" />
-        <activity android:name=".Test" />
+        <activity android:name=".RegisterActivity" />
 
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
@@ -48,7 +48,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

@@ -4,40 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.fifol.tohelp.RegisterActivity">
-
+    tools:context="com.example.fifol.tohelp.RegisterActivity"
+    android:background="@drawable/empty_v"
+    android:layoutDirection="ltr">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#274b81"
+        android:orientation="vertical"
         android:weightSum="6">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.6"></View>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Registration"
-            android:textColor="#e86f6f"
             android:textSize="48sp"
-            android:textAlignment="center"></TextView>
-
+            android:textAlignment="center"
+            android:textColor="#e86f6f"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
             android:orientation="vertical"
             android:layout_margin="15dp"
-            android:padding="15dp"
-            android:background="@drawable/blue_button"
-            android:weightSum="3"
-            >
+            android:background="@drawable/blue_button">
 
 
             <EditText
@@ -47,7 +42,6 @@
                 android:layout_weight="1"
                 android:text="elfi@gmail.com"
                 android:hint="שם משתמש"
-
                 />
 
             <EditText
@@ -55,22 +49,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="elfi"
-                android:hint="סיסמה"
-
-                />
+                android:hint="ססמא "/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:weightSum="3"
-                >
-
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
@@ -78,38 +67,32 @@
                     android:onClick="registerUser"
                     />
 
-                <view
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    />
-
-
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:text="חזור"
-                    android:onClick="backToLogin"
+                    android:textAlignment="center"
 
+                    android:text="שכחתי ססמא "
                     />
 
-
+                <Button
+                    android:onClick="fromRegToLogin"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:text="חזור"/>
 
 
 
 
             </LinearLayout>
 
-
-
-
-
-
-
+        </LinearLayout>
 
     </LinearLayout>
 
-    </LinearLayout>
+
 </LinearLayout>
