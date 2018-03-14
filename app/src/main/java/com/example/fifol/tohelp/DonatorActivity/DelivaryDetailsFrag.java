@@ -1,4 +1,4 @@
-package com.example.fifol.tohelp.DeliveriesActivities;
+package com.example.fifol.tohelp.DonatorActivity;
 
 import android.annotation.SuppressLint;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.cloudant.client.org.lightcouch.DocumentConflictException;
-import com.example.fifol.tohelp.DonatorActivity.MyProductList;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.MyOrdersData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
@@ -104,7 +103,7 @@ public class DelivaryDetailsFrag extends Fragment {
         closeFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                closeFragment();
             }
         });
     }
@@ -124,7 +123,7 @@ public class DelivaryDetailsFrag extends Fragment {
                     for (Map myMap : ownedProducts) {
                         products.put(myMap.get("ProductTitle") + "_" + myMap.get("ProductDesc"), Integer.parseInt(myMap.get("Count").toString()));
                     }
-                    final MyOrdersData myOrdersData = new MyOrdersData( currentUser._id,currentUser._rev,currentUser.name, currentUser.adress, products,currentUser.phone,"system");
+                    final MyOrdersData myOrdersData = new MyOrdersData( currentUser._id,currentUser.name, currentUser.adress, products,currentUser.phone,"נקלט במערכת");
                     try {
                         db.save(myOrdersData);
                     }catch (DocumentConflictException e){

@@ -35,7 +35,7 @@ public class DeliveryScreen extends AppCompatActivity {
 
 
     public void logOut(View view) {
-        UserData.logOut();
+        UserData.getCurrentUser().logOut();
         finish();
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
     tools:context="com.example.fifol.tohelp.RegisterActivity"
     android:background="@drawable/empty_v"
     android:layoutDirection="ltr">
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="6">
+        android:weightSum="7">
 
         <View
             android:layout_width="match_parent"
@@ -22,34 +22,58 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Registration"
+            android:text="הרשמה"
             android:textSize="48sp"
             android:textAlignment="center"
-            android:textColor="#e86f6f"/>
+            android:textColor="#0080ff"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:orientation="vertical"
             android:layout_margin="15dp"
             android:background="@drawable/blue_button">
 
 
             <EditText
-                android:id="@+id/userNameRegister"
+                android:id="@+id/userEmailRegister"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="elfi@gmail.com"
                 android:hint="שם משתמש"
                 />
-
+            <EditText
+                android:id="@+id/nameRegister"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="שם פרטי "/>
+            <EditText
+                android:id="@+id/lastNameRegister"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="שם משפחה "/>
             <EditText
                 android:id="@+id/passwordRegister"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:hint="ססמא "/>
+
+            <EditText
+                android:id="@+id/addressRegister"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="כתובת "/>
+            <EditText
+                android:id="@+id/phoneRegister"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:hint="פלאפון"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

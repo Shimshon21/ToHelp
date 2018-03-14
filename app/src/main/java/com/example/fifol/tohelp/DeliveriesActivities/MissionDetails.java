@@ -11,14 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.example.fifol.tohelp.DonatorActivity.ScanBarCode;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.MyOrdersData;
+import android.widget.ArrayAdapter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class MissionDetails extends Fragment {
-
+    TextView name ,address , phone;
+    ListView listView ;
     Button button;
 
     @Override
@@ -40,9 +45,16 @@ public class MissionDetails extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
+        name = view.findViewById(R.id.name);
+        address = view.findViewById(R.id.address);
+        phone = view.findViewById(R.id.phone);
         MyOrdersData myOrdersData = (MyOrdersData) bundle.get("missionDetails");
-        System.out.println(myOrdersData._id);
+        name.setText(myOrdersData._id);
+        address.setText(myOrdersData.address);
+        phone.setText(myOrdersData.phone);
         button=view.findViewById(R.id.closeDetailsFrag);
+        listView = view.findViewById(R.id.products);
+        setProductsAdapter(myOrdersData);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,4 +65,13 @@ public class MissionDetails extends Fragment {
             }
         });
     }
+    public void setProductsAdapter(MyOrdersData myOrdersData){
+        Map<String,Integer> productsMap = myOrdersData.products;
+        List<String> productsList = new ArrayList<>();
+        for(String key :productsMap.keySet()){
+            productsList.add(key.replace("_"," ") +"  כמות: " + productsMap.get(key));
+        }
+        listView.setAdapter( new ArrayAdapter(getContext(),R.layout.array_textview_adapter,productsList));
+    }
+
 }

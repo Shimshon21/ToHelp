@@ -44,6 +44,7 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
 
         private CloudantClient client = CloudentKeys.getClientBuilder();
         private String COURIERS_MISSION = "users";
+        private String ORDERS_DATABASE = "donaters_delivery_orders";
 
 
         public DeliveryAdapter(Context context, List<MyOrdersData> values) {
@@ -61,35 +62,44 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
             View rowView = inflater.inflate(R.layout.delivery_row, parent, false);
             TextView desc = rowView.findViewById(R.id.description);
             TextView address = rowView.findViewById(R.id.address);;
-            Button confirmOrder = rowView.findViewById(R.id.waze);
+            final Button confirmOrder = rowView.findViewById(R.id.waze);
             Button details = rowView.findViewById(R.id.details);
-            confirmOrder.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("StaticFieldLeak")
-                @Override
-                public void onClick(View view) {
-                    if(courierData.mission.equals("{}")) {
-                        new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected Void doInBackground(Void... voids) {
-                                Map missionOrder = new HashMap();
-                                missionOrder.put("donatorId", values.get(position)._id);
-                                missionOrder.put("rev", values.get(position)._rev);
-                                courierData.mission = missionOrder;
-                                Database db = client.database(COURIERS_MISSION, false);
-                                db.update(courierData);
-                                return null;
-                            }
+            if(values.get(position).process.equals("נקלט במערכת")) {
+                confirmOrder.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("StaticFieldLeak")
+                    @Override
+                    public void onClick(View view) {
+                        if (courierData.mission.equals("no mission")) {
+                            new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    Map missionOrder = new HashMap();
+                                    missionOrder.put("donatorId", values.get(position)._id);
+                                    missionOrder.put("rev", values.get(position)._rev);
+                                    courierData.mission = missionOrder;
+                                    Database db = client.database(COURIERS_MISSION, false);
+                                    Database missionDb = client.database(ORDERS_DATABASE, false);
+                                    values.get(position).process = "שליח בדרך";
+                                    missionDb.update(values.get(position));
+                                    db.update(courierData);
+                                    return null;
+                                }
 
-                            @Override
-                            protected void onPostExecute(Void aVoid) {
-                                super.onPostExecute(aVoid);
-                                Toast.makeText(context, "משימה עודכנה למשימה נוכחית", Toast.LENGTH_LONG).show();
-                            }
-                        }.execute();
-                    }else {
-                        Toast.makeText(context,"משימה כבר קיימת",Toast.LENGTH_LONG).show();}
-                }
-             });
+                                @Override
+                                protected void onPostExecute(Void aVoid) {
+                                    super.onPostExecute(aVoid);
+                                    Toast.makeText(context, "משימה עודכנה למשימה נוכחית", Toast.LENGTH_LONG).show();
+                                    confirmOrder.setText(" משימה בטיפול");
+                                }
+                            }.execute();
+                        } else {
+                            Toast.makeText(context, "משימה כבר קיימת", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }else {
+                confirmOrder.setText(" משימה בטיפול");
+            }
             details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

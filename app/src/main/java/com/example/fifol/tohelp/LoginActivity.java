@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -73,33 +76,33 @@ public class LoginActivity extends Activity {
         System.out.println("Logged in presssed");
         new AsyncTask<String, Void, UserData>() {
             @Override
-            protected UserData doInBackground(String... strings){
-                System.out.println("First  "+strings[0]);
+            protected UserData doInBackground(String... strings) {
+                System.out.println("First  " + strings[0]);
                 Database db = client.database(DB_NAME_TEXT, false);
-                UserData userData ;
+                UserData userData;
                 try {
-                 JSONObject  logData = new JSONObject(), qury = new JSONObject(), qury2 = new JSONObject(), id = new JSONObject(), pass = new JSONObject();
-                    qury.put("$eq",strings[0]);
-                    qury2.put("$eq",strings[1]);
-                    id.put("_id",qury);
-                    pass.put("password",qury2);
-                    JSONArray array =new JSONArray();
-                    logData.put("selector",id);
-                    logData.put("selector",pass);
-                   userData = db.findByIndex(String.valueOf(logData),UserData.class).get(0);
-                }catch (NoDocumentException|JSONException|IndexOutOfBoundsException e){
+                    JSONObject logData = new JSONObject(), qury = new JSONObject(), qury2 = new JSONObject(), id = new JSONObject(), pass = new JSONObject();
+                    qury.put("$eq", strings[0]);
+                    qury2.put("$eq", strings[1]);
+                    id.put("_id", qury);
+                    id.put("password", qury2);
+                    logData.put("selector",id );
+                    Log.i("LogData",logData.toString());
+                    userData = db.findByIndex(String.valueOf(logData), UserData.class).get(0);
+                } catch (NoDocumentException | JSONException | IndexOutOfBoundsException e) {
                     e.printStackTrace();
-                    userData=null;
-                }if(userData!= null) {
-                    return userData;
+                    userData = null;
                 }
-                else  return null;
+                if (userData != null) {
+                    return userData;
+                } else return null;
             }
             @Override
             protected void onPostExecute(UserData loggedUser) {
                 super.onPostExecute(loggedUser);
                 if(loggedUser!=null ){
                     UserData.setCurrentUser(loggedUser);
+                    Log.i("Loogen in user" ,loggedUser.name);
                     switch (loggedUser.role){
                         case "user":
                             Intent i = new Intent(LoginActivity.this,DonorActivity.class);

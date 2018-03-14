@@ -22,7 +22,6 @@ import java.util.ArrayList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collect_points_screen);
-
         final ListView listview = findViewById(R.id.listview);
 
         //TODO שליפת הנתונים מתוך הדאטאבייס

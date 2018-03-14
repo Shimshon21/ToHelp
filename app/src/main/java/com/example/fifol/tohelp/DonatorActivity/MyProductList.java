@@ -23,15 +23,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.example.fifol.tohelp.Adapters.MyBasketListAdapter;
 import com.example.fifol.tohelp.Adapters.MyProductListAdapter;
-import com.example.fifol.tohelp.DeliveriesActivities.DelivaryDetailsFrag;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.CloudentKeys;
-import com.example.fifol.tohelp.Utils.MyOrdersData;
 import com.example.fifol.tohelp.Utils.MyProdutsData;
 import com.example.fifol.tohelp.Utils.MySqlLite;
 import com.example.fifol.tohelp.Utils.SingletonUtil;
@@ -43,7 +40,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +76,8 @@ public class MyProductList extends AppCompatActivity{
         cameraView = findViewById(R.id.cameraView);
         listview = findViewById(R.id.productListView);
         progressBar = findViewById(R.id.productsLoading);
+        Log.i("CurrenUserInProductList",currentUser.name);
         final List<Map> productSql = singy.getAllData(productsSqliteDb);
-
         //Get / Save images  and setting adapter.
             new AsyncTask<Void, Void, List<Map>>() {
                 @Override
@@ -101,9 +97,7 @@ public class MyProductList extends AppCompatActivity{
 
         //Save images in flyweight list for improve UX.
         public void  setFlyweight(List<Map> list){
-            System.out.println(list);
             for (Map key:list){
-                System.out.println("decoid" + key);
                 if(flyweightImgs.get(key.get("ProductImage"))==null){
                     String url = key.get("ProductImage").toString();
                     try {
@@ -194,7 +188,6 @@ public class MyProductList extends AppCompatActivity{
             @Override
             protected void onPostExecute(MyProdutsData results) {
                 if(results!=null) {
-
                     MyProdutsData item = results;
                     setOrUpdateSql(item,currentUser);
                     //INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ('123','someimagae','awsome','title',(count = '1' Where (SELECT Count FROM products WHERE ProductId = '123')IS NULL +1))
@@ -210,9 +203,9 @@ public class MyProductList extends AppCompatActivity{
 
     //Added into user name table values , or update existed table values.
     private void setOrUpdateSql(MyProdutsData item, UserData userData) {
-        Cursor cursor = productsSqliteDb.rawQuery("SELECT Count FROM "+userData.name+ " WHERE ProductId = (?)",new String[]{item._id});
+        Cursor cursor = productsSqliteDb.rawQuery("SELECT Count FROM "+currentUser.name+ " WHERE ProductId = (?)",new String[]{item._id});
         if (cursor.moveToFirst()){
-            String insert2 = "INSERT OR REPLACE INTO "+userData.name+"(ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),((SELECT Count FROM products WHERE ProductId = (?))+'1'))";
+            String insert2 = "INSERT OR REPLACE INTO "+currentUser.name+"(ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ((?),(?),(?),(?),((SELECT Count FROM "+currentUser.name+" WHERE ProductId = (?))+'1'))";
             String url =singy.getImageAttachment(item);
             productsSqliteDb.execSQL(insert2,new String[]{item._id,url,item.desc,item.title,item._id});
         }else {
@@ -258,7 +251,6 @@ public class MyProductList extends AppCompatActivity{
     //Get all documents by company type.
     @SuppressLint("StaticFieldLeak")
     public List<MyProdutsData> getCompanyaData(final String companyName){
-        System.out.println("get company data");
         new AsyncTask<Void, Void,List<MyProdutsData>>() {
             @Override
             protected List<MyProdutsData> doInBackground(Void... voids) {

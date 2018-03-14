@@ -46,7 +46,7 @@ public class CurrentMissionScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.curent_mission_screen);
-        if (!courierData.mission.equals("{}")) {
+        if (!courierData.mission.equals("no mission")) {
             setViews();
             new AsyncTask<Void, Void, MyOrdersData>() {
 
@@ -108,7 +108,7 @@ public class CurrentMissionScreen extends AppCompatActivity {
             @Override
             protected Void doInBackground(Void... voids) {
                 switch (ordersData.process){
-                    case "נקלט במערכת":
+                    case "שליח בדרך":
                         System.out.println("FALSE!!!!!!!!!!");
                         ordersData.process = "מוצר נלקח";
                         try {
@@ -122,7 +122,7 @@ public class CurrentMissionScreen extends AppCompatActivity {
                         //Todo update warhouse count coloumns database.
                         System.out.println("TRUE!!!!!!!!!!!!!!!!!");
                         final Database dbUsers = client.database(COURIER_USERS, false);
-                        courierData.mission = "{}";
+                        courierData.mission = "no mission" ;
                         dbUsers.update(courierData);
                         db.remove(ordersData);
                         Log.d("initilize", "mission had been restart ");
@@ -134,9 +134,9 @@ public class CurrentMissionScreen extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                if(!courierData.mission.equals("{}"))
+                if(!courierData.mission.equals("no mission"))
                 status.setText(ordersData.process);
-                else finish();
+                finish();
             }
         }.execute();
     }

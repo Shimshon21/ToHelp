@@ -28,7 +28,7 @@ import java.util.Map;
         private final Context context;
         private List<Map> values;
         SingletonUtil singy = SingletonUtil.getSingy();
-        UserData userData = UserData.currentUser;
+        UserData userData ;
         SQLiteDatabase db ;
 
 
@@ -36,7 +36,7 @@ import java.util.Map;
             super(context, R.layout.my_product_row);
             this.context = context;
             this.values = values;
-            System.out.println(values);
+            userData = UserData.getCurrentUser();
             db= new MySqlLite(context).getReadableDatabase();
         }
 
@@ -53,7 +53,6 @@ import java.util.Map;
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.my_product_row, parent, false);
-                System.out.println("first only");
             }
             setViewsText(convertView,item);
             setListners(convertView,item);

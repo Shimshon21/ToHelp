@@ -2,6 +2,7 @@ package com.example.fifol.tohelp.Utils;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -19,7 +20,6 @@ import java.util.Map;
 
 public class SingletonUtil {
    public static SingletonUtil singy = new SingletonUtil();
-   UserData currentUser = UserData.getCurrentUser();
 
    private SingletonUtil(){
 
@@ -45,6 +45,8 @@ public class SingletonUtil {
     //@return List<Map> the data from table 'products'
     public List<Map> getAllData(SQLiteDatabase db) {
         List<Map> sqlData = new ArrayList<>();
+        UserData currentUser = UserData.getCurrentUser();
+        Log.i("SingelTonUser",currentUser.name);
         Cursor sqlProducts = db.rawQuery("Select * from "+currentUser.name,null);
         System.out.println(sqlProducts);
             for (sqlProducts.moveToFirst(); !sqlProducts.isAfterLast(); sqlProducts.moveToNext()) {

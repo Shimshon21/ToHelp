@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 public  class UserData  {
 
-    public   String role;//user , courier ,secretary,warehouseManager.
+    public  String role;//user , courier ,secretary,warehouseManager.
    public   String _id;
    public  String _rev;
    public    String name;
@@ -52,13 +52,14 @@ public  class UserData  {
    }
 
 
-   public static UserData getCurrentUser(){
+   public static   UserData getCurrentUser(){
       return currentUser;
    }
 
 
-   public static void logOut(){
+   public static UserData logOut(){
       currentUser = null;
+      return null;
    }
 
 }

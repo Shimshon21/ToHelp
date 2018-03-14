@@ -20,6 +20,15 @@ public class MyOrdersData implements Parcelable {
 
     public MyOrdersData(){}
 
+    public MyOrdersData(String id,String doanatorName,String address,Map<String,Integer> products,String phone,String process){
+        this._id = id;
+        this.phone = phone;
+        this.doanatorName = doanatorName;
+        this.address = address;
+        this.products = products;
+        this.process = process;
+    }
+
     public MyOrdersData(String id,String _rev,String doanatorName,String address,Map<String,Integer> products,String phone,String process){
         this._id = id;
         this._rev = _rev;
