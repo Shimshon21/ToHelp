@@ -1,7 +1,5 @@
 package com.example.fifol.tohelp.DeliveriesActivities;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MissionDetails extends Fragment {
+public class MissionDetailsFrag extends Fragment {
     TextView name ,address , phone;
     ListView listView ;
-    Button button;
+    Button closeFrag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,26 +43,28 @@ public class MissionDetails extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
+        setView(view);
+        MyOrdersData myOrdersData = (MyOrdersData) bundle.get("missionDetails");
+        if(myOrdersData!=null) {
+            name.setText(myOrdersData._id);
+            address.setText(myOrdersData.address);
+            phone.setText(myOrdersData.phone);
+            setProductsAdapter(myOrdersData);
+        }
+        onClickCloseFragemnt();
+    }
+
+
+    //Find views by id.
+    private void setView(View view) {
         name = view.findViewById(R.id.name);
         address = view.findViewById(R.id.address);
         phone = view.findViewById(R.id.phone);
-        MyOrdersData myOrdersData = (MyOrdersData) bundle.get("missionDetails");
-        name.setText(myOrdersData._id);
-        address.setText(myOrdersData.address);
-        phone.setText(myOrdersData.phone);
-        button=view.findViewById(R.id.closeDetailsFrag);
+        closeFrag =view.findViewById(R.id.closeDetailsFrag);
         listView = view.findViewById(R.id.products);
-        setProductsAdapter(myOrdersData);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.remove(MissionDetails.this);
-                fragmentTransaction.commit();
-            }
-        });
     }
+
+    //Set adapter for order products.
     public void setProductsAdapter(MyOrdersData myOrdersData){
         Map<String,Integer> productsMap = myOrdersData.products;
         List<String> productsList = new ArrayList<>();
@@ -73,5 +73,22 @@ public class MissionDetails extends Fragment {
         }
         listView.setAdapter( new ArrayAdapter(getContext(),R.layout.array_textview_adapter,productsList));
     }
+
+
+    //Close fragment.
+    private void onClickCloseFragemnt() {
+        closeFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(MissionDetailsFrag.this);
+                fragmentTransaction.commit();
+            }
+        });
+    }
+
+
+
 
 }

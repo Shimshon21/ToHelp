@@ -28,7 +28,6 @@ public class AboutUs extends AppCompatActivity {
         scrollTxt = findViewById(R.id.scrollTxt);
         mediaController = new MediaController(this);
         videoLenght = 0;
-
         scrollTxt.setText("TO HELP : \n\n " +
                 "אפליקציה חברתית אשר מטרתה לקשר \n\n בין הורים אשר אין ביכולתם  \n\n למספק לתינוק שלהם מזון אשר    \n\nיענה על כל צרכיו התזונתיים  \n\n לבין כל מי שרוצה לתרום לאותם הורים"
                 );

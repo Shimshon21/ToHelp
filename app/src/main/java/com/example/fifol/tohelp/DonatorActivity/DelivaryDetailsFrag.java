@@ -38,15 +38,12 @@ import static com.example.fifol.tohelp.Utils.SingletonUtil.singy;
  */
 
 public class DelivaryDetailsFrag extends Fragment {
-
     Button confirmDetails,closeFrag;
     EditText name,address,phone,email ;
     SQLiteDatabase productsSqliteDb ;
     final String DB_NAME_ORDERS="donaters_delivery_orders";
     UserData currentUser =  UserData.getCurrentUser();
     ListView productslist;
-
-
 
     @Nullable
     @Override
@@ -70,7 +67,7 @@ public class DelivaryDetailsFrag extends Fragment {
         });
     }
 
-    //set text for local EditText Views.
+    //Set text for local EditText Views.
     private void setViewsTexts() {
         name.setText(currentUser.name);
         email.setText(currentUser._id);
@@ -108,7 +105,7 @@ public class DelivaryDetailsFrag extends Fragment {
         });
     }
 
-    //*****Write into DB*****//
+    //Add order to database - "donaters_delivery_orders"
     @SuppressLint("StaticFieldLeak")
     private void addDonationRequest(){
         if(productsSqliteDb.rawQuery("Select * from "+currentUser.name,null).moveToFirst()) {
@@ -128,16 +125,13 @@ public class DelivaryDetailsFrag extends Fragment {
                         db.save(myOrdersData);
                     }catch (DocumentConflictException e){
                         e.printStackTrace();
-                        System.out.println("request alrdy assigned.");
                         return false;
                     }
-                    Log.e("TAG", "doInBackground: cloudant data was saved.... ");
                     return true;
                 }
 
                 @Override
                 protected void onPostExecute(Boolean aVoid) {
-                    System.out.println("****************pushed data successfully***************************");
                     if(aVoid) {
                         new AlertDialog.Builder(getContext()).setTitle("תרומה התבצעה:").setMessage("תרומתך נקלטה במערכת אנחנו נשלח הודעה ששליח יגיע אליך.").show();
                     }else {
@@ -146,7 +140,6 @@ public class DelivaryDetailsFrag extends Fragment {
                     closeFragment();
                 }
             }.execute();
-
         }else Toast.makeText(getContext(),"אנא הוסף מוצר לרשימה.",Toast.LENGTH_SHORT).show();
     }
 
@@ -157,6 +150,4 @@ public class DelivaryDetailsFrag extends Fragment {
         fragmentTransaction.remove(DelivaryDetailsFrag.this);
         fragmentTransaction.commit();
     }
-
-
 }

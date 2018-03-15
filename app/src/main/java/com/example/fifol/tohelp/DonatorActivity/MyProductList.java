@@ -49,53 +49,63 @@ import java.util.Map;
  */
 
 public class MyProductList extends AppCompatActivity{
-    public static final int PREMISSION_REQUEST = 200;
+    static final int PREMISSION_REQUEST = 200;
     SurfaceView cameraView;
     Barcode barcode;
     public static Map<String, Bitmap> flyweightImgs = new HashMap();
     private MyProdutsData dbData;
     private List<MyProdutsData> dbListData;
-    public ListView listview;
+    ListView listview;
     ProgressBar progressBar;
     MyBasketListAdapter adapter;
     UserData currentUser = UserData.getCurrentUser();
 
     final String DB_NAME_TEXT = "products";
 
-
-   public final CloudantClient client = CloudentKeys.getClientBuilder();
+     final CloudantClient client = CloudentKeys.getClientBuilder();
     SingletonUtil singy = SingletonUtil.getSingy();
-    public SQLiteDatabase productsSqliteDb;
+    SQLiteDatabase productsSqliteDb;
+
 
     @Override
-    @SuppressLint("StaticFieldLeak")
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_product_list);
         productsSqliteDb = new MySqlLite(this).getWritableDatabase();
+        setViews();
+        setSqlProductsAdapter();
+        }
+
+
+    // Get/Save images in flyweight and set adapter.
+    @SuppressLint("StaticFieldLeak")
+    private void setSqlProductsAdapter() {
+        final List<Map> productSql = singy.getAllData(productsSqliteDb);
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... avoid) {
+                setFlyweight(productSql);
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                adapter = new MyBasketListAdapter(MyProductList.this, productSql);
+                listview.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        }.execute();
+    }
+
+    //Find views by id .
+    private void setViews() {
         cameraView = findViewById(R.id.cameraView);
         listview = findViewById(R.id.productListView);
         progressBar = findViewById(R.id.productsLoading);
-        Log.i("CurrenUserInProductList",currentUser.name);
-        final List<Map> productSql = singy.getAllData(productsSqliteDb);
-        //Get / Save images  and setting adapter.
-            new AsyncTask<Void, Void, List<Map>>() {
-                @Override
-                protected List<Map> doInBackground(Void... avoid) {
-                    setFlyweight(productSql);
-                    return null;
-                }
+    }
 
-                @Override
-                protected void onPostExecute(List<Map> aVoid) {
-                    adapter = new MyBasketListAdapter(MyProductList.this, productSql);
-                    listview.setAdapter(adapter);
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-            }.execute();
-        }
-
-        //Save images in flyweight list for improve UX.
+    //Save images in flyweight list for improve UX.
         public void  setFlyweight(List<Map> list){
             for (Map key:list){
                 if(flyweightImgs.get(key.get("ProductImage"))==null){
@@ -109,7 +119,7 @@ public class MyProductList extends AppCompatActivity{
             }
           }
 
-    //Ask user for permission to use the camera .
+    //Ask user for permission to use the camera/open camera fragment.
     private void askPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PREMISSION_REQUEST);
@@ -122,7 +132,7 @@ public class MyProductList extends AppCompatActivity{
         }
     }
 
-    //Get the bar code from the fragment ScanBarCode
+    //Get the bar code from the fragment ScanBarCode.
     public void getBarCode(Barcode barcode){
         if(barcode!= null)
         this.barcode=barcode;
@@ -135,7 +145,6 @@ public class MyProductList extends AppCompatActivity{
             case PREMISSION_REQUEST: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //bug in xiaomi redmi note 4 worth checking.
                     try {
                         askPermission();
                     }catch (RuntimeException e){
@@ -246,33 +255,6 @@ public class MyProductList extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    //Get all documents by company type.
-    @SuppressLint("StaticFieldLeak")
-    public List<MyProdutsData> getCompanyaData(final String companyName){
-        new AsyncTask<Void, Void,List<MyProdutsData>>() {
-            @Override
-            protected List<MyProdutsData> doInBackground(Void... voids) {
-                //return databases.toString();
-                Database db = client.database(DB_NAME_TEXT, false);
-                String myJson=setQuery(companyName);
-                List<MyProdutsData> resultsItems = db.findByIndex(myJson, MyProdutsData.class);
-                dbListData = resultsItems;
-                for (MyProdutsData item : resultsItems) {
-                    setFlyweightAttchImgs(item);
-                }
-                return resultsItems;
-            }
-
-            @Override
-            protected void onPostExecute(List<MyProdutsData> resultsItems) {
-                MyProductListAdapter adapter = new MyProductListAdapter(MyProductList.this,resultsItems);
-               listview.setAdapter(adapter);
-               progressBar.setVisibility(View.INVISIBLE);
-            }
-        }.execute();
-        return dbListData;
     }
 
 }

@@ -28,7 +28,7 @@
                 android:layout_margin="3dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:onClick="goToMissionScreen"
+                android:onClick="goToMissionsScreen"
                 >
 
                 <TextView

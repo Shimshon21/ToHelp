@@ -51,20 +51,18 @@ public class LoginActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_register_screen);
-        new GetAllStock().getCompanyaData("materna");
         name = findViewById(R.id.userName);
         password = findViewById(R.id.password);
     }
 
-
+//Log in witout a user and pass.
     public void skipIn(View view) {
         Intent i = new Intent(this,DonorActivity.class);
         startActivity(i);
     }
 
-    //Todo register user.
+    //Register new user in data base "users".
     public void register(View view){
-        System.out.println("testing");
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
 
@@ -73,7 +71,6 @@ public class LoginActivity extends Activity {
 
     @SuppressLint("StaticFieldLeak")
     public void logIn(View view) {
-        System.out.println("Logged in presssed");
         new AsyncTask<String, Void, UserData>() {
             @Override
             protected UserData doInBackground(String... strings) {
@@ -81,21 +78,18 @@ public class LoginActivity extends Activity {
                 Database db = client.database(DB_NAME_TEXT, false);
                 UserData userData;
                 try {
-                    JSONObject logData = new JSONObject(), qury = new JSONObject(), qury2 = new JSONObject(), id = new JSONObject(), pass = new JSONObject();
+                    JSONObject logData = new JSONObject(), qury = new JSONObject(), qury2 = new JSONObject(), idAndPass = new JSONObject();
                     qury.put("$eq", strings[0]);
                     qury2.put("$eq", strings[1]);
-                    id.put("_id", qury);
-                    id.put("password", qury2);
-                    logData.put("selector",id );
-                    Log.i("LogData",logData.toString());
+                    idAndPass.put("_id", qury);
+                    idAndPass.put("password", qury2);
+                    logData.put("selector",idAndPass );
                     userData = db.findByIndex(String.valueOf(logData), UserData.class).get(0);
                 } catch (NoDocumentException | JSONException | IndexOutOfBoundsException e) {
                     e.printStackTrace();
                     userData = null;
                 }
-                if (userData != null) {
-                    return userData;
-                } else return null;
+               return userData;
             }
             @Override
             protected void onPostExecute(UserData loggedUser) {
@@ -118,23 +112,11 @@ public class LoginActivity extends Activity {
                             break;
                     }
                 }else {
-                    Toast.makeText(LoginActivity.this,"user doesn't exists", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,"אחד מהפרטים שגויים אנא נסה שנית..", Toast.LENGTH_LONG).show();
                 }
             }
         }.execute(name.getText().toString(),password.getText().toString());
     }
-
-
-
-   /* //TODO pull the data from cloudant and check if the user exists
-    public Boolean checkCredentials(String userName,String userPass){
-        if (name.getText().toString().equals(userName) && password.getText().toString().equals(userPass)) {
-            return  true;
-        }else{
-             return false;
-        }
-    }*/
-
 
     @SuppressLint("StaticFieldLeak")
     public  void httpWithAsync(){

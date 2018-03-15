@@ -64,7 +64,7 @@ import java.util.Map;
         Button removeItem = convertView.findViewById(R.id.removeItemBtn);
         Button plusItem = convertView.findViewById(R.id.addItemBtn);
 
-        //Add  column 'Count' by one.
+        //Add  column 'Count' by one in sql.
         plusItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +77,7 @@ import java.util.Map;
                 MyBasketListAdapter.this.notifyDataSetChanged();
         }});
 
-        //Decrease column 'Count' by one.
+        //Decrease column 'Count' by one one in sql.
         removeItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

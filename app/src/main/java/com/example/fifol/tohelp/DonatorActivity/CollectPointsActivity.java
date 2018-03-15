@@ -38,7 +38,6 @@ import java.util.ArrayList;
                 "מרכז חנקין.\nחנקין 109, חולון.\nטלפון: 03-5590021",
                 "רעים מרכז למחול ותנועת הגוף.\nהופיין 44, חולון.\nטלפון: 03-5035299",
                 "מרכז שטיינברג החדש -\nבמה למוסיקה חיה.\nגבעת התחמושת 21, חולון.\nטלפון: 03-5500012"};
-
         final ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);

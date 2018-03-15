@@ -22,7 +22,7 @@ public class MySqlLite extends SQLiteOpenHelper {
             Log.i("Data base Created","the data base was created successfully");
             db.execSQL(table);
         }
-    }//sql create the data base
+    }//Sql create the data base.
     @Override
     public void onCreate(SQLiteDatabase db) {
        initDb(db);

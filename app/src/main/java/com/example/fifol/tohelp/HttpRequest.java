@@ -144,6 +144,7 @@ public class HttpRequest {
         os.write(data);
         return this;
     }
+
     //When caller only need to send, and don't need String response from server
     public int send() throws IOException{
         return con.getResponseCode(); //return HTTP status code to indicate whether it successfully sent

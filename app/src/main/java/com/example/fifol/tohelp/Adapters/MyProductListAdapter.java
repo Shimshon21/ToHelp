@@ -43,7 +43,6 @@ import java.util.List;
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.my_product_row, parent, false);
-                System.out.println("first only");
             }
             TextView productDesc = convertView.findViewById(R.id.productDesc);
             TextView textView = convertView.findViewById(R.id.productTitle);

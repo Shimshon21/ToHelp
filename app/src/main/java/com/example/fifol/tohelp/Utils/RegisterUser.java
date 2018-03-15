@@ -12,6 +12,7 @@ public class RegisterUser {
     public   String adress;
     public   String phone;
     public   String  password;
+
     public RegisterUser(String _id, String name, String LastName, String adress, String password, String phone){
        this._id = _id;
         this.name = name;

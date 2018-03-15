@@ -13,13 +13,13 @@ public  class UserData  {
 
     public  String role;//user , courier ,secretary,warehouseManager.
    public   String _id;
-   public  String _rev;
+   private String _rev;
    public    String name;
    public    String adress;
    public    String phone;
-    public   String  password;
+    private String  password;
     public  Object mission;
-   public static UserData currentUser;
+   private static UserData currentUser;
 
    private UserData() {
    }

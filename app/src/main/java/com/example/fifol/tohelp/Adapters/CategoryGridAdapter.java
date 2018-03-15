@@ -16,7 +16,7 @@ import org.json.JSONException;
 /**
  * Created by shim-polak on 2/18/2018.
  */
-
+//Not used !!!!!!!!!!!!
 public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapter.RecyclerHolder>  {
     Context context;
     JSONArray jsonArrTxt;

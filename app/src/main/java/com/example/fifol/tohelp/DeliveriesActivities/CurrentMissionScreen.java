@@ -41,38 +41,14 @@ public class CurrentMissionScreen extends AppCompatActivity {
     JSONObject jsonStr;
     MyOrdersData ordersData;
 
-    @SuppressLint("StaticFieldLeak")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.curent_mission_screen);
         if (!courierData.mission.equals("no mission")) {
             setViews();
-            new AsyncTask<Void, Void, MyOrdersData>() {
-
-                @Override
-                protected MyOrdersData doInBackground(Void... voids) {
-                    try {
-                        jsonStr = new JSONObject(new Gson().toJson(courierData.mission));
-                        final Database db = client.database(ORDERS_DATABASE, false);
-                        ordersData = db.find(MyOrdersData.class, jsonStr.getString("donatorId"));
-                        System.out.println(ordersData._id + "  " + ordersData.address + " got from order data");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    return ordersData;
-                }
-
-                @Override
-                protected void onPostExecute(MyOrdersData ordersData) {
-                    super.onPostExecute(ordersData);
-                    donator.setText(ordersData.doanatorName);
-                    donatorAddress.setText(ordersData.address);
-                    phone.setText(ordersData.phone);
-                    status.setText(ordersData.process);
-                    setProductsAdapter();
-                }
-            }.execute();
+            getCourierCurrentMission();
         } else {
             new AlertDialog.Builder(this).setMessage("אין משימה קיימת !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -83,6 +59,36 @@ public class CurrentMissionScreen extends AppCompatActivity {
         }
     }
 
+
+    //Get the courier mission by mission _id from data base - "donaters_delivery_orders" ;
+    @SuppressLint("StaticFieldLeak")
+    private void getCourierCurrentMission() {
+        new AsyncTask<Void, Void, MyOrdersData>() {
+
+            @Override
+            protected MyOrdersData doInBackground(Void... voids) {
+                try {
+                    jsonStr = new JSONObject(new Gson().toJson(courierData.mission));
+                    final Database db = client.database(ORDERS_DATABASE, false);
+                    ordersData = db.find(MyOrdersData.class, jsonStr.getString("donatorId"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return ordersData;
+            }
+            @Override
+            protected void onPostExecute(MyOrdersData ordersData) {
+                super.onPostExecute(ordersData);
+                donator.setText(ordersData.doanatorName);
+                donatorAddress.setText(ordersData.address);
+                phone.setText(ordersData.phone);
+                status.setText(ordersData.process);
+                setProductsAdapter();
+            }
+        }.execute();
+    }
+
+    //Find views by id.
     private void setViews() {
         donatorAddress = findViewById(R.id.address);
         donator = findViewById(R.id.name);
@@ -91,16 +97,17 @@ public class CurrentMissionScreen extends AppCompatActivity {
         status = findViewById(R.id.status);
     }
 
+    //Set adapter for courier products list to collect.
     public void setProductsAdapter(){
        Map<String,Integer> productsMap = ordersData.products;
         List<String> productsList = new ArrayList<>();
         for(String key :productsMap.keySet()){
             productsList.add(key.replace("_"," ") +"  כמות: " + productsMap.get(key));
         }
-        System.out.println(ordersData.products.keySet());
        products.setAdapter( new ArrayAdapter<String>(this,R.layout.array_textview_adapter,productsList));
     }
 
+    //Change mission status in databases "donaters_delivery_orders" and "users".
     @SuppressLint("StaticFieldLeak")
     public void changeStatus(View view) {
         final Database db = client.database(ORDERS_DATABASE, false);
@@ -109,18 +116,15 @@ public class CurrentMissionScreen extends AppCompatActivity {
             protected Void doInBackground(Void... voids) {
                 switch (ordersData.process){
                     case "שליח בדרך":
-                        System.out.println("FALSE!!!!!!!!!!");
                         ordersData.process = "מוצר נלקח";
                         try {
                             db.update(ordersData);
                         } catch (DocumentConflictException e) {
                             e.printStackTrace();
-                            System.out.println();
                         }
                         break;
                     case "מוצר נלקח":
                         //Todo update warhouse count coloumns database.
-                        System.out.println("TRUE!!!!!!!!!!!!!!!!!");
                         final Database dbUsers = client.database(COURIER_USERS, false);
                         courierData.mission = "no mission" ;
                         dbUsers.update(courierData);
@@ -131,6 +135,7 @@ public class CurrentMissionScreen extends AppCompatActivity {
                 System.out.println("סטאטוס השתנה בהצלחה!!");
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);

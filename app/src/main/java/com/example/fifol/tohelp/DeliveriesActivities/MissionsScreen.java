@@ -31,6 +31,7 @@ public class MissionsScreen extends AppCompatActivity {
         loadListFromDB();
     }
 
+    //Get all documents from database "donaters_delivery_orders"
     @SuppressLint("StaticFieldLeak")
     private void loadListFromDB() {
         if (UserData.getCurrentUser() != null) {
@@ -47,6 +48,7 @@ public class MissionsScreen extends AppCompatActivity {
                     return allOrders;
                 }
 
+                //Set adapter for all orders .
                 @Override
                 protected void onPostExecute(List<MyOrdersData> allOrders) {
                     super.onPostExecute(allOrders);
@@ -58,6 +60,8 @@ public class MissionsScreen extends AppCompatActivity {
             }.execute();
         }
     }
+
+
     public void goBack(View view) {
         finish();
     }

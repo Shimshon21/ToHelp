@@ -97,11 +97,9 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
 
     //When found barCode pass data to pickProductActivity and finish .
     private void identfiyBarCode() {
-        Boolean identify = false;
         barcode.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                System.out.println("released!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
 
             @Override
@@ -117,26 +115,30 @@ public class ScanBarCode extends android.support.v4.app.Fragment {
     }
     public void finishFragment(Barcode barcode) {
         if (getActivity() != null) {
-            ((MyProductList) getActivity()).getBarCode(barcode);
-            alrdyScanned = true;
-            if (alrdyScanned) {
-                //Prevent from camrasource to keep working in background.
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (ScanBarCode.cameraSource != null) {
-                            cameraSource.stop();
-                        }
-                    }
-                });
+            if (!alrdyScanned) {
+                alrdyScanned = true;
+                ((MyProductList) getActivity()).getBarCode(barcode);
+            }
+            closeCamera();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ScanBarCode.this);
                 fragmentTransaction.commit();
             }
         }
-        }
+
+    //Prevent from camrasource to keep working in background.
+    private void closeCamera() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (ScanBarCode.cameraSource != null) {
+                    cameraSource.stop();
+                }
+            }
+        });
     }
+}
 
 

@@ -29,6 +29,7 @@ public class SingletonUtil {
        return singy;
     }
 
+    //Convert Gson to String.
     public String getImageAttachment(MyProdutsData item) {
         try {
             JSONObject jsonStr = new JSONObject(new Gson().toJson(item._attachments));
@@ -42,7 +43,6 @@ public class SingletonUtil {
 
 
     //Get all data in table products
-    //@return List<Map> the data from table 'products'
     public List<Map> getAllData(SQLiteDatabase db) {
         List<Map> sqlData = new ArrayList<>();
         UserData currentUser = UserData.getCurrentUser();
@@ -60,6 +60,7 @@ public class SingletonUtil {
                 System.out.println(sqlProducts.getColumnName(3) + "" + sqlProducts.getString(3) + " " + sqlProducts.getColumnName(2) + " " + sqlProducts.getString(2) + " " + sqlProducts.getColumnName(1) + "" + sqlProducts.getString(1) + "");
                 sqlData.add(map);
             }
+            sqlProducts.close();
             return sqlData;
         }
         }

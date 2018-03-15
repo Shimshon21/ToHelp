@@ -19,8 +19,7 @@ public class DeliveryScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delivery_screen);
-        System.out.println(UserData.getCurrentUser()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    }
+          }
 
 
     public void goToCurrentMission(View view) {
@@ -28,14 +27,15 @@ public class DeliveryScreen extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void goToMissionScreen(View view) {
+    public void goToMissionsScreen(View view) {
         Intent i = new Intent(this, MissionsScreen.class);
         startActivity(i);
     }
 
 
+    //Logout current user, set it null.
     public void logOut(View view) {
-        UserData.getCurrentUser().logOut();
+        UserData.logOut();
         finish();
     }
 }

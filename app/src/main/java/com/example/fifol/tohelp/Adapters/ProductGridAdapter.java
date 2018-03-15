@@ -16,7 +16,7 @@ import org.json.JSONException;
 /**
  * Created by shim-polak on 2/18/2018.
  */
-
+//Not used !!!!!!!!!!!!
 public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.RecyclerHolder>  {
     Context context;
     JSONArray dataArr;
@@ -65,7 +65,6 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
 
 
     class RecyclerHolder extends RecyclerView.ViewHolder {
-
         LinearLayout layout;
         TextView textViewType,textViewAge;
 

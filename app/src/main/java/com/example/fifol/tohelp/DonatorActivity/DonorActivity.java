@@ -19,7 +19,7 @@ import com.example.fifol.tohelp.Utils.UserData;
  */
 
 public class DonorActivity extends Activity {
-    int CALL_REQUEST=300;
+
     UserData currentUser = UserData.getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class DonorActivity extends Activity {
         }
     }
 
-    //start DonateProduct activity.
+    //Start DonateProduct activity.
     public void goToDonateProduct(View view) {
         if(UserData.getCurrentUser()!=null) {
             Intent i = new Intent(this, MyProductList.class);
@@ -40,24 +40,27 @@ public class DonorActivity extends Activity {
             new AlertDialog.Builder(this).setTitle("אינך מחובר").setMessage("כדי להשמתמש בפיצר זה הינך צריך להתחבר במסך הראשי עם שם וסיסמא.").show();
         }
     }
-    //start about us activity
+    //Start about us activity
     public void goToAboutUs(View view) {
         Intent i = new Intent(this, AboutUs.class);
         startActivity(i);
     }
 
-    //start CollectionPoints activity.
+    //Start CollectionPoints activity.
     public void goToCollectPoints(View view) {
         Intent i = new Intent(this, CollectPointsActivity.class);
         startActivity(i);
     }
 
+    //Start dial number intent for call donation.
     public void callForMoneyDonation(View view) {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 028546212"));
         startActivity(i);
     }
+
+    //Logout user .
     public void logOut(View view) {
-      currentUser =  currentUser.logOut();
+      currentUser =  UserData.logOut();
         Log.i("LogOut",currentUser+"");
         finish();
     }
@@ -65,6 +68,6 @@ public class DonorActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-       currentUser = currentUser.logOut();
+       currentUser = UserData.logOut();
     }
 }

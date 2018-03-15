@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.cloudant.client.org.lightcouch.DocumentConflictException;
 import com.cloudant.sync.documentstore.ConflictException;
 import com.example.fifol.tohelp.Utils.CloudentKeys;
 import com.example.fifol.tohelp.Utils.RegisterUser;
@@ -27,6 +28,12 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resigter);
+        setViews();
+
+    }
+
+    //Find views by id.
+    private void setViews() {
         userPssRegister = findViewById(R.id.passwordRegister);
         userNameRegster = findViewById(R.id.nameRegister);
         userLastNameRegister = findViewById(R.id.lastNameRegister);
@@ -35,35 +42,36 @@ public class RegisterActivity extends AppCompatActivity {
         userAddressRegister = findViewById(R.id.addressRegister);
     }
 
+    //Add new user to database "users".
     @SuppressLint("StaticFieldLeak")
     public void registerUser(View view){
-        //todo check of the user is not registered , if not write the user to the data base
         if(userPssRegister.getText().toString().length() < 4  ||  userNameRegster.getText().length() < 4 ){
             Toast.makeText(this, "password and username must contain minimum of  4 chars", Toast.LENGTH_LONG).show();
         }else{
-
-            new AsyncTask<Void,Void,Void>() {
+            new AsyncTask<Void,Void,Boolean>() {
                 @Override
-                protected Void doInBackground(Void... voids) {
-
+                protected Boolean doInBackground(Void... voids) {
+                    boolean successed =true;
                     JSONObject userRegister = new JSONObject();
                     try
                     {
                         RegisterUser  registerUser = new RegisterUser( userEmailRegister.getText().toString().trim() ,userNameRegster.getText().toString(),userLastNameRegister.getText().toString(),userAddressRegister.getText().toString(),userPssRegister.getText().toString(),userPhoneRegister.getText().toString());
                         Database db = client.database(USERS_DB, false);
                         db.save(registerUser);
-                    } catch(Exception e){
+                    } catch(DocumentConflictException e){
                         e.printStackTrace();
+                        successed =false;
                     }
-                    return null;
+                    return successed;
                 }
 
                 @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    Toast.makeText(RegisterActivity.this,"registered",Toast.LENGTH_LONG).show();
-                    finish();
-
+                protected void onPostExecute(Boolean successed) {
+                    super.onPostExecute(successed);
+                    if(successed){
+                        Toast.makeText(RegisterActivity.this,"registered",Toast.LENGTH_LONG).show();
+                        finish();
+                    }else    Toast.makeText(RegisterActivity.this,"משתמש כבר קיים במערכת!",Toast.LENGTH_LONG);
                 }
             }.execute();
         }
