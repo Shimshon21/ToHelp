@@ -11,7 +11,7 @@ public class MyProdutsData {
     public String company;
     public String title;
     public String desc;
-    public String count;
+    public int count;
     public LinkedTreeMap _attachments ;
 
     public MyProdutsData(){
@@ -25,7 +25,7 @@ public class MyProdutsData {
         this.desc = desc;
     }
 
-    public MyProdutsData(String id, String company, String title, String desc,String count , LinkedTreeMap _attachments) {
+    public MyProdutsData(String id, String company, String title, String desc,int count , LinkedTreeMap _attachments) {
         this._id=id;
         this.company = company;
         this.title = title;

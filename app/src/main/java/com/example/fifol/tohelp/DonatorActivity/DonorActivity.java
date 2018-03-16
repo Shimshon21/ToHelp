@@ -60,14 +60,14 @@ public class DonorActivity extends Activity {
 
     //Logout user .
     public void logOut(View view) {
-      currentUser =  UserData.logOut();
-        Log.i("LogOut",currentUser+"");
+         UserData.logOut();
+        Log.i("LogOut",currentUser.name+"");
         finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-       currentUser = UserData.logOut();
+     UserData.logOut();
     }
 }

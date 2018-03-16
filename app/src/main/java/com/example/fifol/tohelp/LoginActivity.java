@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.cloudant.client.api.model.Permissions;
 import com.cloudant.client.org.lightcouch.NoDocumentException;
 import com.example.fifol.tohelp.DeliveriesActivities.DeliveryScreen;
 import com.example.fifol.tohelp.DonatorActivity.DonorActivity;
+import com.example.fifol.tohelp.Utils.CloudentKeys;
 import com.example.fifol.tohelp.Utils.UserData;
 import com.example.fifol.tohelp.WareHouseActivities.GetAllStock;
 
@@ -26,6 +28,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 
@@ -65,7 +68,6 @@ public class LoginActivity extends Activity {
     public void register(View view){
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
-
     }
 
 
@@ -91,6 +93,7 @@ public class LoginActivity extends Activity {
                 }
                return userData;
             }
+            //Open activity by the user role.
             @Override
             protected void onPostExecute(UserData loggedUser) {
                 super.onPostExecute(loggedUser);

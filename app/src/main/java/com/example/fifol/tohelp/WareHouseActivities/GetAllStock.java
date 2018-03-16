@@ -24,9 +24,10 @@ import java.util.List;
 public class GetAllStock {
     CloudantClient client = CloudentKeys.getClientBuilder();
    String ALL_PRODUCTS_DB = "products";
+   int getProductCount;
     private List<MyProdutsData> dbListData;
 
-   public void getAllByCatgory(){
+   public void getAllByCatgory() {
        Database db = client.database(ALL_PRODUCTS_DB,false);
    }
 
@@ -56,17 +57,12 @@ public class GetAllStock {
     private String  setQuery(String companyName) {
         String myJson="";
         try {
-            // A Java type that can be serialized to JSON
             JSONObject myQuery = new JSONObject();
-            //get the query conditions
             JSONObject myQueryField = new JSONObject();
-            //Here put the search by condtioin.
             myQueryField.put("$eq", companyName);
             JSONObject myData = new JSONObject();
             myData.put("company", myQueryField);
             myQuery.put("selector", myData);
-            //get the fields
-            //Here put the field u want to be returend
             myQuery.put("fields", "[_id,company,title,desc,count]");
             myQuery.put("sort", "[{_id,asc}]");
             Log.e("JSON", "myJson: " + myQuery.toString());
@@ -77,4 +73,15 @@ public class GetAllStock {
         return myJson;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    public void updateCount(int position){
+        MyProdutsData myProdutsData = dbListData.get(position);
+        myProdutsData.count = myProdutsData.count + getProductCount;
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                return null;
+            }
+        }.execute();
+    }
 }

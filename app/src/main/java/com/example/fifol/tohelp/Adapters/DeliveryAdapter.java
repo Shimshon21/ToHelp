@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.cloudant.client.api.model.Permissions;
 import com.example.fifol.tohelp.DeliveriesActivities.MissionDetailsFrag;
 import com.example.fifol.tohelp.DeliveriesActivities.MissionsScreen;
 import com.example.fifol.tohelp.R;
@@ -26,6 +27,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.acl.Permission;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +105,8 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
                             courierData.mission = missionOrder;
                             Database db = client.database(COURIERS_MISSION, false);
                             Database missionDb = client.database(ORDERS_DATABASE, false);
+                            EnumSet<Permissions>permissions = EnumSet.of(Permissions._writer,Permissions._reader);
+
                             values.get(position).process = "שליח בדרך";
                             missionDb.update(values.get(position));
                             db.update(courierData);
