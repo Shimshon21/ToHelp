@@ -44,7 +44,7 @@ public class MissionDetailsFrag extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         setView(view);
-        MyOrdersData myOrdersData = (MyOrdersData) bundle.get("missionDetails");
+        MyOrdersData myOrdersData = (MyOrdersData) bundle.get("missionDetailsFrag");
         if(myOrdersData!=null) {
             name.setText(myOrdersData._id);
             address.setText(myOrdersData.address);
