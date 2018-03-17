@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/empty_v"
     tools:context="com.example.fifol.tohelp.DonatorActivity.AboutUs">
 
 
@@ -12,7 +13,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#274b81"
+
         android:weightSum="10">
 
         <TextView
@@ -33,25 +34,24 @@
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_weight="4.2"
                 />
 
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/blue_button"
+            android:gravity="center"
+            android:onClick="goBack"
+            android:text="חזור"
+            android:textAlignment="center" />
 
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:background="@drawable/blue_button"
-                android:gravity="center_horizontal"
-                android:onClick="goBack"
-                android:text="חזור" />
-
+            android:layout_weight="0.8"/>
 
 
     </LinearLayout>

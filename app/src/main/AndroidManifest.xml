@@ -14,21 +14,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DonatorActivity.DonorActivity" />
-        <activity android:name=".DonatorActivity.MyProductList" />
-        <activity android:name=".DonatorActivity.CollectPointsActivity" />
-        <activity android:name=".DonatorActivity.AboutUs" />
-        <activity android:name=".DeliveriesActivities.DeliveryScreen" />
-        <activity android:name=".DeliveriesActivities.CurrentMissionScreen" />
-        <activity android:name=".DeliveriesActivities.MissionsScreen" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".DonatorActivity.DonorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DonatorActivity.MyProductList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DonatorActivity.CollectPointsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DonatorActivity.AboutUs"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DeliveriesActivities.DeliveryScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DeliveriesActivities.CurrentMissionScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DeliveriesActivities.MissionsScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"/>
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

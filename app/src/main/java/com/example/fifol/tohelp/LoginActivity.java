@@ -52,7 +52,14 @@ public class LoginActivity extends Activity {
         password = findViewById(R.id.password);
     }
 
-//Log in witout a user and pass.
+    @Override
+    protected void onStart() {
+        super.onStart();
+        password.setText("");
+
+    }
+
+    //Log in witout a user and pass.
     public void skipIn(View view) {
         Intent i = new Intent(this,DonorActivity.class);
         startActivity(i);

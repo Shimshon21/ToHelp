@@ -55,7 +55,20 @@ public class WareHouseActivity extends AppCompatActivity {
         setNavigationOnItemSelected();
         setHamburgerMenuDrawer();
     }
+    private void setHamburgerMenuDrawer() {
+        hamburgerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mDrawerLayout.isDrawerOpen(Gravity.END)) {
+                    mDrawerLayout.closeDrawer(Gravity.END);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.END);
 
+                }
+            }
+        });
+    }
+/*
     //Open and close drawer
     private void setHamburgerMenuDrawer() {
         hamburgerBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,14 +76,17 @@ public class WareHouseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                } else {
-                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+                }else if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                else {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
 
                 }
             }
         });
     }
-
+*/
     //Set table list by item was picked from navigationView.
     private void setNavigationOnItemSelected() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

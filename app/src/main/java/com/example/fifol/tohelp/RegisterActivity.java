@@ -53,9 +53,13 @@ public class RegisterActivity extends AppCompatActivity {
                 protected Boolean doInBackground(Void... voids) {
                     boolean successed =true;
                     JSONObject userRegister = new JSONObject();
-                    try
-                    {
-                        RegisterUser  registerUser = new RegisterUser( userEmailRegister.getText().toString().trim() ,userNameRegster.getText().toString(),userLastNameRegister.getText().toString(),userAddressRegister.getText().toString(),userPssRegister.getText().toString(),userPhoneRegister.getText().toString());
+                    try {
+                        RegisterUser  registerUser = new RegisterUser( userEmailRegister.getText().toString().trim()
+                                ,userNameRegster.getText().toString()
+                                ,userLastNameRegister.getText().toString()
+                                ,userAddressRegister.getText().toString()
+                                ,userPssRegister.getText().toString()
+                                ,userPhoneRegister.getText().toString());
                         Database db = client.database(USERS_DB, false);
                         db.save(registerUser);
                     } catch(DocumentConflictException e){

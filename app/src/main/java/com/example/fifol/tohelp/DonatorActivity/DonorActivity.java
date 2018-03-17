@@ -61,7 +61,6 @@ public class DonorActivity extends Activity {
     //Logout user .
     public void logOut(View view) {
          UserData.logOut();
-        Log.i("LogOut",currentUser.name+"");
         finish();
     }
 
