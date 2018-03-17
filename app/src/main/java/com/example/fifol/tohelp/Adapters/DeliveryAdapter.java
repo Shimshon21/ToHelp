@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.cloudant.client.api.model.Permissions;
+import com.cloudant.client.org.lightcouch.DocumentConflictException;
 import com.example.fifol.tohelp.DeliveriesActivities.MissionDetailsFrag;
 import com.example.fifol.tohelp.DeliveriesActivities.MissionsScreen;
 import com.example.fifol.tohelp.R;
@@ -95,7 +96,7 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(View view) {
-                if (courierData.mission.equals("no mission")) {
+                if (courierData.mission.equals("no mission") ||  courierData.mission.equals("no mission2")  ) {
                     new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected Void doInBackground(Void... voids) {
@@ -109,7 +110,12 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
 
                             values.get(position).process = "שליח בדרך";
                             missionDb.update(values.get(position));
-                            db.update(courierData);
+                            try{
+                                db.update(courierData);
+                            }catch (DocumentConflictException e){
+
+                            }
+
                             return null;
                         }
                         @Override

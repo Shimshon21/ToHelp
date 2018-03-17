@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
+import com.cloudant.client.org.lightcouch.Document;
 import com.cloudant.client.org.lightcouch.DocumentConflictException;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.CloudentKeys;
@@ -46,7 +47,7 @@ public class CurrentMissionScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.curent_mission_screen);
-        if (!courierData.mission.equals("no mission")) {
+        if (!courierData.mission.equals("no mission") && !courierData.mission.equals("no mission2") ) {
             setViews();
             getCourierCurrentMission();
         } else {
@@ -127,7 +128,11 @@ public class CurrentMissionScreen extends AppCompatActivity {
                         //Todo update warhouse count coloumns database.
                         final Database dbUsers = client.database(COURIER_USERS, false);
                         courierData.mission = "no mission" ;
-                        dbUsers.update(courierData);
+                        try {
+                            dbUsers.update(courierData);
+                        }catch (DocumentConflictException e) {
+                            courierData.mission = "no mission2 ";
+                        }
                         db.remove(ordersData);
                         Log.d("initilize", "mission had been restart ");
                         break;
