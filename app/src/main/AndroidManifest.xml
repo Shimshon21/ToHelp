@@ -22,7 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".DonatorActivity.DonorActivity" />
-        <activity android:name=".DonatorActivity.PickProductActivity" />
         <activity android:name=".DonatorActivity.MyProductList" />
         <activity android:name=".DonatorActivity.CollectPointsActivity" />
         <activity android:name=".DonatorActivity.AboutUs" />
@@ -35,7 +34,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".WarehouseActivity" />
+        <activity android:name=".WareHouseActivities.WareHouseActivity" />
 
         <service android:name=".WareHouseActivities.MyFirebaseSerivce">
             <intent-filter>

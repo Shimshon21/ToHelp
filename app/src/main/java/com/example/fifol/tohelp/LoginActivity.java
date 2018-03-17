@@ -14,22 +14,16 @@ import android.widget.Toast;
 import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
-import com.cloudant.client.api.model.Permissions;
 import com.cloudant.client.org.lightcouch.NoDocumentException;
 import com.example.fifol.tohelp.DeliveriesActivities.DeliveryScreen;
 import com.example.fifol.tohelp.DonatorActivity.DonorActivity;
-import com.example.fifol.tohelp.Utils.CloudentKeys;
 import com.example.fifol.tohelp.Utils.UserData;
-import com.example.fifol.tohelp.WareHouseActivities.GetAllStock;
+import com.example.fifol.tohelp.WareHouseActivities.WareHouseActivity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 
 
 /**
@@ -110,7 +104,7 @@ public class LoginActivity extends Activity {
                             startActivity(i);
                             break;
                         case "warhouse":
-                            i = new Intent(LoginActivity.this,MainActivity.class);
+                            i = new Intent(LoginActivity.this,WareHouseActivity.class);
                             startActivity(i);
                             break;
                     }

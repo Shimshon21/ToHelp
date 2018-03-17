@@ -54,7 +54,6 @@ public class MyProductList extends AppCompatActivity{
     Barcode barcode;
     public static Map<String, Bitmap> flyweightImgs = new HashMap();
     private MyProdutsData dbData;
-    private List<MyProdutsData> dbListData;
     ListView listview;
     ProgressBar progressBar;
     MyBasketListAdapter adapter;
@@ -199,7 +198,6 @@ public class MyProductList extends AppCompatActivity{
                 if(results!=null) {
                     MyProdutsData item = results;
                     setOrUpdateSql(item,currentUser);
-                    //INSERT OR REPLACE INTO products (ProductId, ProductImage, ProductDesc,ProductTitle,Count) VALUES ('123','someimagae','awsome','title',(count = '1' Where (SELECT Count FROM products WHERE ProductId = '123')IS NULL +1))
                    List<Map> productSql = singy.getAllData(productsSqliteDb);
                     adapter.swap(productSql);
 

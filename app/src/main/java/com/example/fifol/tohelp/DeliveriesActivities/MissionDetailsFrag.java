@@ -38,7 +38,6 @@ public class MissionDetailsFrag extends Fragment {
         return inflater.inflate(R.layout.fragment_mission_details, container, false);
     }
 
-    //Todo set views texts!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
