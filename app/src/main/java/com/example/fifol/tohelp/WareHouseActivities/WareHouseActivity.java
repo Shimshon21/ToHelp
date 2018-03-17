@@ -22,6 +22,7 @@ import com.example.fifol.tohelp.Adapters.MyWarhouseListAdapter;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.CloudentKeys;
 import com.example.fifol.tohelp.Utils.MyProdutsData;
+import com.example.fifol.tohelp.Utils.UserData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,25 +69,7 @@ public class WareHouseActivity extends AppCompatActivity {
             }
         });
     }
-/*
-    //Open and close drawer
-    private void setHamburgerMenuDrawer() {
-        hamburgerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }else if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-                }
-                else {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
 
-                }
-            }
-        });
-    }
-*/
     //Set table list by item was picked from navigationView.
     private void setNavigationOnItemSelected() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -113,6 +96,9 @@ public class WareHouseActivity extends AppCompatActivity {
                         getCompanyaData("Pediasure");
                         tableName.setText("פדיאשור");
                         break;
+                    case "התנתק":
+                        UserData.logOut();
+                        finish();
                 }
                 return false;
             }

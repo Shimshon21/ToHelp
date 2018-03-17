@@ -16,6 +16,7 @@ import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.cloudant.client.org.lightcouch.Document;
 import com.cloudant.client.org.lightcouch.DocumentConflictException;
+import com.cloudant.client.org.lightcouch.NoDocumentException;
 import com.example.fifol.tohelp.R;
 import com.example.fifol.tohelp.Utils.CloudentKeys;
 import com.example.fifol.tohelp.Utils.MyOrdersData;
@@ -47,7 +48,8 @@ public class CurrentMissionScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.curent_mission_screen);
-        if (!courierData.mission.equals("no mission") && !courierData.mission.equals("no mission2") ) {
+        Log.i("Mission",courierData.mission.toString());
+        if ((!courierData.mission.equals("no mission")) && (!courierData.mission.equals("no mission2"))) {
             setViews();
             getCourierCurrentMission();
         } else {
@@ -65,26 +67,28 @@ public class CurrentMissionScreen extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     private void getCourierCurrentMission() {
         new AsyncTask<Void, Void, MyOrdersData>() {
-
             @Override
             protected MyOrdersData doInBackground(Void... voids) {
                 try {
                     jsonStr = new JSONObject(new Gson().toJson(courierData.mission));
                     final Database db = client.database(ORDERS_DATABASE, false);
                     ordersData = db.find(MyOrdersData.class, jsonStr.getString("donatorId"));
-                } catch (JSONException e) {
+                } catch (JSONException|NoDocumentException e) {
                     e.printStackTrace();
+                    return null;
                 }
                 return ordersData;
             }
             @Override
             protected void onPostExecute(MyOrdersData ordersData) {
                 super.onPostExecute(ordersData);
-                donator.setText(ordersData.doanatorName);
-                donatorAddress.setText(ordersData.address);
-                phone.setText(ordersData.phone);
-                status.setText(ordersData.process);
-                setProductsAdapter();
+                if(ordersData !=null) {
+                    donator.setText(ordersData.doanatorName);
+                    donatorAddress.setText(ordersData.address);
+                    phone.setText(ordersData.phone);
+                    status.setText(ordersData.process);
+                    setProductsAdapter();
+                }
             }
         }.execute();
     }
@@ -131,9 +135,10 @@ public class CurrentMissionScreen extends AppCompatActivity {
                         try {
                             dbUsers.update(courierData);
                         }catch (DocumentConflictException e) {
-                            courierData.mission = "no mission2 ";
+                            e.printStackTrace();
+                            courierData.mission = "no mission2";
+                            db.remove(ordersData);
                         }
-                        db.remove(ordersData);
                         Log.d("initilize", "mission had been restart ");
                         break;
                 }

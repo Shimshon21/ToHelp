@@ -96,7 +96,7 @@ public class DeliveryAdapter extends ArrayAdapter<String> {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(View view) {
-                if (courierData.mission.equals("no mission") ||  courierData.mission.equals("no mission2")  ) {
+                if ((courierData.mission.equals("no mission")) ||  (courierData.mission.equals("no mission2"))) {
                     new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected Void doInBackground(Void... voids) {

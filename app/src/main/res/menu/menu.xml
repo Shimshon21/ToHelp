@@ -16,5 +16,8 @@
         <item
             android:id="@+id/nootrilon"
             android:title="נוטרילון" />
+        <item
+            android:id="@+id/logout"
+            android:title="התנתק"/>
     </group>
 </menu>
