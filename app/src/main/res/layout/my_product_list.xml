@@ -34,12 +34,12 @@
         android:id="@+id/productListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/header"
         android:divider="#FFCC00"
         android:dividerHeight="0px"
-        android:layoutDirection="ltr"
-        android:layout_below="@+id/header"
-        android:layout_above="@+id/footer"
-        />
+        android:layoutDirection="ltr" />
 
     <FrameLayout
         android:layout_centerInParent="true"
