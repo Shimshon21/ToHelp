@@ -197,6 +197,7 @@
                 android:weightSum="2"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:onClick="options"
                 >
 
                 <ImageView
@@ -228,10 +229,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#D2527F"
+                android:background="#D3809D"
                 android:layout_margin="3dp"
                 android:weightSum="2"
                 android:orientation="vertical"
+                android:onClick="stock"
                 >
 
                 <ImageView

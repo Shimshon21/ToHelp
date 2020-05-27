@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.cloudant.sync.internal.sqlite.SQLDatabase;
 import com.example.fifol.tohelp.R;
@@ -62,6 +63,15 @@ public class DonorActivity extends Activity {
     public void logOut(View view) {
          UserData.logOut();
         finish();
+    }
+
+    public void options(View view){
+        Toast.makeText(this,"פיצר זה אינו זמין כרגע",Toast.LENGTH_SHORT).show();
+    }
+
+    public void stock(View view){
+        Toast.makeText(this,"פיצר זה אינו זמין כרגע",Toast.LENGTH_LONG).show();
+
     }
 
     @Override
