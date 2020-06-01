@@ -35,7 +35,7 @@ public class WareHouseActivity extends AppCompatActivity {
     private String ALL_PRODUCTS_DB = "products";
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-     private TextView tableName;
+     private TextView tableName,userName;
      private   MyWarhouseListAdapter adapter ;
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
@@ -115,6 +115,7 @@ public class WareHouseActivity extends AppCompatActivity {
         mActivityTitle = getTitle().toString();
         navigationView = findViewById(R.id.nav_view);
         hamburgerBtn = findViewById(R.id.hamburger);
+        userName = findViewById(R.id.user_name);
     }
 
     //Drawer settings.

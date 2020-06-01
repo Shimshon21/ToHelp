@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
@@ -155,5 +156,9 @@ public class CurrentMissionScreen extends AppCompatActivity {
             }
         }.execute();
     }
+
+    public void directLocation(View view) {
+        Toast.makeText(this,"פיצר זה אינו זמין כרגע.",Toast.LENGTH_SHORT).show();
     }
+}
 

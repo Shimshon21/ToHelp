@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/empty_v"
     tools:context="com.example.fifol.tohelp.WareHouseActivities.WareHouseActivity">
 
     <android.support.v7.widget.Toolbar
@@ -17,11 +18,10 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/ttl"
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="to help" />
+                android:layout_centerInParent="true" />
 
             <Button
                 android:id="@+id/hamburger"

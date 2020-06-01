@@ -133,9 +133,10 @@ public class MyProductList extends AppCompatActivity{
 
     //Get the bar code from the fragment ScanBarCode.
     public void getBarCode(Barcode barcode){
-        if(barcode!= null)
-        this.barcode=barcode;
-       getDataById(barcode.displayValue);
+        if(barcode!= null) {
+            this.barcode = barcode;
+            getDataById(barcode.displayValue);
+        }
     }
 
     @Override
