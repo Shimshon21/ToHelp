@@ -2,7 +2,7 @@
 Help donating baby food products
 
 ### Description:
-This app was a part of IBM hackaton with materna, the main theme of the app is to help donating food for babys.
+This app was a part of IBM hackaton with materna, the app helps donating baby food to those who cant`t afford to.
 The idea is to help anyone who can not affort to get food for his baby.
 So materna  and IBM joined hands together and stated this hackhaton.
 
